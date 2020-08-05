@@ -1,0 +1,9 @@
+class Player(val name: String, val birthday: Int, val badmintonId: Int) {
+    var sex = Sex.UNKNOWN
+    var levelPoints = 0
+    var singlesPoints = 0
+    var doublesPoints = 0
+    var mixedPoints = 0
+
+    override fun toString() = "Name: $name, Level points: $levelPoints"
+}
