@@ -5,5 +5,8 @@ class Player(val name: String, val birthday: Int, val badmintonId: Int) {
     var doublesPoints = 0
     var mixedPoints = 0
 
-    override fun toString() = "Name: $name, Level points: $levelPoints"
+    override fun toString() =
+            "Name: $name, Sex: $sex" +
+            "\nID: $badmintonId, birthday: $birthday"+
+            "\nPoints: $levelPoints, $singlesPoints, $doublesPoints, $mixedPoints"
 }

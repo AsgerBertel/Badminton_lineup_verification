@@ -1,4 +1,6 @@
 
 fun main() {
-    scrapeRankList()
+    val players = scrapeRankList()
+
+    println(players[2])
 }

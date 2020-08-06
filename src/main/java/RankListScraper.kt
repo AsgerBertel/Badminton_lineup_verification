@@ -3,9 +3,8 @@ import com.gargoylesoftware.htmlunit.html.*
 import java.lang.Exception
 
 const val RankListUrl = """https://www.badmintonplayer.dk/DBF/Ranglister/#287,2020,,0,,,1492,0,,,,15,,,,0,,,,,,"""
-const val sleepTime = 2000
 
-fun scrapeRankList() {
+fun scrapeRankList():List<Player> {
     val players = mutableListOf<Player>()
 
     // Starting up the web client and waits for JavaScript to finish
@@ -31,27 +30,28 @@ fun scrapeRankList() {
 
     // Iterates over the 7 different rank lists to get the points
     for (i in 1..7) {
-        for (row in pTable) {
-            try {
-                val currentPlayer = players.firstOrNull { it.badmintonId == parseBadmintonId(row.childElements.toMutableList()[2].textContent) }
-                        ?: throw Exception("A player was found on specifying rank list but not on the level rank list. Name: ${row.childElements.toMutableList()[3].childElements.first().textContent}")
-                parseRankListRow(row, currentPlayer)
-            }
-            catch (e:Exception) {
-                continue
-            }
-
-        }
         // Change to next rank list page and set the new player table
         page = page.getFirstByXPath<DomElement>("//*[@id='PanelResults']/div/div[${i}]/a").click()
         waitForJavaScript()
         pTable = scrapeRankListTable(page)
+
+        // Try to match the player with one from the level rank list and give the points
+        for (row in pTable) {
+            try {
+                val currentPlayer = players.firstOrNull { it.badmintonId == parseBadmintonId(row.childElements.toMutableList()[2].textContent) }
+                        ?: throw Exception("A player was found on specifying rank list but not on the level rank list. Name: ${row.childElements.toMutableList()[3].childElements.first().textContent}")
+                parseRankListRow(row, currentPlayer, i)
+            }
+            catch (e:Exception) {
+                continue
+            }
+        }
     }
 
-    println(players[1])
+    return players
 }
 
-private fun waitForJavaScript() = Thread.sleep(2000)
+private fun waitForJavaScript() = Thread.sleep(500)
 
 private fun scrapeRankListTable(page:HtmlPage):MutableList<DomElement> {
     val grid = page.getFirstByXPath<HtmlTableBody>("""//*[@id="PanelResults"]/table/tbody""")
@@ -67,13 +67,47 @@ private fun initPlayerFromLevelRankList(elem:DomElement):Player {
     val id = parseBadmintonId(list[2].textContent)
     val birthday = idToBirthday(id)
     val name = list[3].firstElementChild.textContent
+    val points = list[5].textContent.toInt()
 
-    return Player(name, birthday, id)
+    val p = Player(name, birthday, id)
+    p.levelPoints = points
+
+    return p
 }
 
-private fun parseRankListRow(elem:DomElement, p:Player) {
+private fun parseRankListRow(elem:DomElement, p:Player, category:Int) {
     val pChildren = elem.childElements.toMutableList()
-    p.levelPoints = pChildren[5].textContent.toInt()
+    val points = pChildren[5].textContent.toInt()
+    when (category) {
+        1 -> throw Exception("Should not assign level points in this function.")
+        2 -> {
+            p.singlesPoints = points
+            p.sex = Sex.MALE
+        }
+        3 -> {
+            p.singlesPoints = points
+            p.sex = Sex.FEMALE
+        }
+        4 -> {
+            p.doublesPoints = points
+            p.sex = Sex.MALE
+        }
+        5 -> {
+            p.doublesPoints = points
+            p.sex = Sex.FEMALE
+        }
+        6 -> {
+            p.mixedPoints = points
+            p.sex = Sex.MALE
+        }
+        7 -> {
+            p.mixedPoints = points
+            p.sex = Sex.FEMALE
+        }
+        else -> {
+            throw Exception("Category had a mismatch.")
+        }
+    }
 }
 
 private fun idToBirthday(id:Int):Int {
