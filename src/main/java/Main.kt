@@ -1,16 +1,15 @@
-fun main(args:Array<String>) {
-    val inputPath = """C:\Users\krist\.tmv\TeamMatchVerify"""
+fun main(args: Array<String>) {
+    val inputPath = if(args.size > 1) {
+        args[1]
+    } else {
+        "TeamMatchVerify.xlsx"
+    }
 
-    //val players = scrapeRankList()
-    val players:List<Player> = listOf(Player("Hans", 20202, 2020201), Player("Jens", 123456, 12345601))
-    players[0].levelPoints = 1000
-    players[1].levelPoints = 1000
+    val players = scrapeRankList()
 
     val eh = ExcelHandler(inputPath)
     eh.clearTable()
     eh.fillTable(players)
     eh.close()
-
-    println(players[1].toCSVLine())
 }
 

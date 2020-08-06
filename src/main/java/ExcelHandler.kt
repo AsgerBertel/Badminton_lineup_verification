@@ -1,25 +1,35 @@
-import org.apache.poi.ss.usermodel.Row
-import org.apache.poi.ss.usermodel.WorkbookFactory
+import org.apache.poi.ss.SpreadsheetVersion
+import org.apache.poi.ss.util.AreaReference
+import org.apache.poi.ss.util.CellReference
+import org.apache.poi.xssf.usermodel.XSSFTable
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
+import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 
+
 class ExcelHandler(val inputPath:String) {
     //Instantiate Excel workbook:
-    private val xlWb = WorkbookFactory.create(FileInputStream(inputPath + ".xlsx"))
+    private val xlWb = XSSFWorkbook(FileInputStream(inputPath))
+
+    private var tableHeight = 0
 
     //Instantiate Excel worksheet:
-    private val sheet = xlWb.getSheet("RankList")
+    private var sheet = xlWb.getSheet("RankList")
 
     fun clearTable() {
-        for (i in 1 until sheet.physicalNumberOfRows) {
-            sheet.removeRow(sheet.getRow(i))
+        for (i in 1 until sheet.lastRowNum) {
+            if (sheet.getRow(i) != null) // safety for empty rows
+                sheet.removeRow(sheet.getRow(i))
         }
     }
 
     fun fillTable(players:List<Player>) {
-        for ((i, p) in players.withIndex()) {
-            val row = sheet.createRow(i)
+        var i = 1
+        tableHeight = players.count()
+
+        for (p in players) {
+            val row = sheet.createRow(i++)
 
             row.createCell(0).setCellValue(p.name)
             row.createCell(1).setCellValue(p.sex.toString())
@@ -31,9 +41,9 @@ class ExcelHandler(val inputPath:String) {
     }
 
     fun close() {
-        val outputStream = FileOutputStream(inputPath + "-new.xlsx")
+        val outputStream = FileOutputStream(inputPath)
 
-
+        File(inputPath).delete()
         xlWb.write(outputStream)
         xlWb.close()
     }
