@@ -1,9 +1,13 @@
+import tornadofx.*
+
 fun main(args: Array<String>) {
     val inputPath = if(args.size > 1) {
         args[1]
     } else {
         "TeamMatchVerify.xlsx"
     }
+
+    launch<MyApp>(args)
 
     val players = scrapeRankList()
 
