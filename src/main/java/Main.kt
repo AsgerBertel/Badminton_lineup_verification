@@ -9,6 +9,10 @@ fun main(args: Array<String>) {
 
     //launch<MyApp>(args)
 
+    UpdatePlayers(inputPath)
+}
+
+fun UpdatePlayers(inputPath:String) {
     val players = scrapeRankList()
 
     val eh = ExcelHandler(inputPath)
@@ -17,4 +21,3 @@ fun main(args: Array<String>) {
     eh.fillTable(players)
     eh.close()
 }
-
