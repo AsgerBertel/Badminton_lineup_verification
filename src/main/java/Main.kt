@@ -7,9 +7,9 @@ fun main(args: Array<String>) {
         """C:\\git\\Team-match-verify\\src\\main\\resources\\TeamMatchVerify.xlsx"""
     }
 
-    //launch<MyApp>(args)
+    launch<MyApp>(args)
 
-    UpdatePlayers(inputPath)
+    //UpdatePlayers(inputPath)
 }
 
 fun UpdatePlayers(inputPath:String) {

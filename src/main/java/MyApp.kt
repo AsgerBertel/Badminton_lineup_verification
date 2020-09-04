@@ -1,5 +1,5 @@
 import tornadofx.*
 
-class MyApp: App(MyView::class) {
+class MyApp: App(StartView::class) {
 
 }

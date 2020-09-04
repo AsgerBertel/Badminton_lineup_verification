@@ -1,26 +1,35 @@
 import com.gargoylesoftware.htmlunit.WebClient
 import com.gargoylesoftware.htmlunit.html.*
+import javafx.beans.property.SimpleObjectProperty
 import java.lang.Exception
 
 const val RankListUrl = """https://www.badmintonplayer.dk/DBF/Ranglister/#287,2020,,0,,,1492,0,,,,15,,,,0,,,,,,"""
+const val progressFrac = (1 - (0.05 + 0.1)) / 7 // = 0,1214
+
+
 class RankListScraper {
     var progress = 0.0
 
     fun scrapeRankList(): List<Player> {
+        println("Starting player update.")
         val players = mutableListOf<Player>()
 
         // Starting up the web client and waits for JavaScript to finish
         val webClient = WebClient()
         var page = webClient.getPage<HtmlPage>(RankListUrl)
         waitForJavaScript()
+        progress = 0.05
 
         // Choose correct version
         //TODO
+        progress = 0.10
 
         // The level rank list must first scrape ID, name and birthday
         var pTable = scrapeRankListTable(page)
-        for (elem in pTable)
+
+        for (elem in pTable) {
             players.add(initPlayerFromLevelRankList(elem))
+        }
 
         // Scrape the second page
         try {
@@ -30,9 +39,8 @@ class RankListScraper {
             pTable = scrapeRankListTable(page)
             for (elem in pTable)
                 players.add(initPlayerFromLevelRankList(elem))
-        } catch (e: Exception) {
-        }
-
+        } catch (e: Exception) { }
+        progress += progressFrac
 
         // Iterates over the 7 different rank lists to get the points
         for (i in 1..7) {
@@ -51,8 +59,11 @@ class RankListScraper {
                     continue
                 }
             }
+            progress += progressFrac
         }
 
+        progress = 1.0
+        println("Scraping finished. Found ${players.size} players.")
         return players
     }
 
