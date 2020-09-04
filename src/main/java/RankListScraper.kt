@@ -12,6 +12,9 @@ fun scrapeRankList():List<Player> {
     var page = webClient.getPage<HtmlPage>(RankListUrl)
     waitForJavaScript()
 
+    // Choose correct version
+    //TODO
+
     // The level rank list must first scrape ID, name and birthday
     var pTable = scrapeRankListTable(page)
     for (elem in pTable)

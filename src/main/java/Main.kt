@@ -4,14 +4,15 @@ fun main(args: Array<String>) {
     val inputPath = if(args.size > 1) {
         args[1]
     } else {
-        "TeamMatchVerify.xlsx"
+        """C:\\git\\Team-match-verify\\src\\main\\resources\\TeamMatchVerify.xlsx"""
     }
 
-    launch<MyApp>(args)
+    //launch<MyApp>(args)
 
     val players = scrapeRankList()
 
     val eh = ExcelHandler(inputPath)
+    println("Found File")
     eh.clearTable()
     eh.fillTable(players)
     eh.close()
