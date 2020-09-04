@@ -13,7 +13,7 @@ fun main(args: Array<String>) {
 }
 
 fun UpdatePlayers(inputPath:String) {
-    val players = scrapeRankList()
+    val players = RankListScraper().scrapeRankList()
 
     val eh = ExcelHandler(inputPath)
     println("Found File")
