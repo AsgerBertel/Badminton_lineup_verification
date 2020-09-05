@@ -4,12 +4,12 @@ fun main(args: Array<String>) {
     val inputPath = if(args.size > 1) {
         args[1]
     } else {
-        """C:\\git\\Team-match-verify\\src\\main\\resources\\TeamMatchVerify.xlsx"""
+        """src/main/resources/TeamMatchVerify.xlsx"""
     }
 
     launch<MyApp>(args)
 
-    //UpdatePlayers(inputPath)
+    UpdatePlayers(inputPath)
 }
 
 fun UpdatePlayers(inputPath:String) {

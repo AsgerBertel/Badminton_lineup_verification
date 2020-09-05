@@ -2,6 +2,7 @@ import com.gargoylesoftware.htmlunit.WebClient
 import com.gargoylesoftware.htmlunit.html.*
 import javafx.beans.property.SimpleObjectProperty
 import java.lang.Exception
+import javax.swing.Box
 
 const val RankListUrl = """https://www.badmintonplayer.dk/DBF/Ranglister/#287,2020,,0,,,1492,0,,,,15,,,,0,,,,,,"""
 const val progressFrac = (1 - (0.05 + 0.1)) / 7 // = 0,1214
@@ -22,6 +23,15 @@ class RankListScraper {
 
         // Choose correct version
         //TODO
+        try{
+                page = page.getFirstByXPath<DomElement>("//*[@id=\"DropDownListVersions\"]").click()
+                waitForJavaScript()
+                findAndClickCorrectVersion(page);
+
+        } catch(e: Exception){
+            println(e.stackTrace)}
+
+
         progress = 0.10
 
         // The level rank list must first scrape ID, name and birthday
@@ -67,6 +77,21 @@ class RankListScraper {
         return players
     }
 
+    private fun findAndClickCorrectVersion(page: HtmlPage){
+
+        var b = false
+        val listOfVersions = page.getFirstByXPath<HtmlSelect>("//*[@id=\"DropDownListVersions\"]")
+        var vList = (listOfVersions.childElements).toMutableList()
+        for(element in  vList){
+            println(element.childElementCount)
+            println(element.textContent)
+            if(element.textContent.endsWith("(senior)", true)) {
+                element.click<(HtmlPage)>()
+                return
+            }
+        }
+    }
+
     private fun waitForJavaScript() = Thread.sleep(500)
 
     private fun scrapeRankListTable(page: HtmlPage): MutableList<DomElement> {
@@ -74,7 +99,6 @@ class RankListScraper {
         val pList = (grid.childElements).toMutableList()
         pList.removeAt(0)
         pList.removeAt(pList.count() - 1)
-
         return pList
     }
 
