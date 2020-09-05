@@ -9,7 +9,7 @@ import kotlin.math.ceil
 
 class ProgressBarView: View() {
     override val root = vbox()
-    private val excelPath = """C:\\git\\Team-match-verify\\src\\main\\resources\\TeamMatchVerify.xlsx"""
+    private val excelPath = """src/main/resources/TeamMatchVerify.xlsx"""
     private val scraper = RankListScraper()
     private val bar = SimpleDoubleProperty()
     private val status = SimpleStringProperty()
