@@ -12,7 +12,7 @@ import kotlin.concurrent.thread
 import kotlin.math.ceil
 import tornadofx.EventBus.RunOn.*
 
-class ProgressBarView: View() {
+class ProgressBarView: Fragment() {
     override val root = vbox()
     private val controller: ProgressBarController by inject()
 
@@ -66,12 +66,10 @@ class ProgressBarView: View() {
 class ProgressBarController:Controller() {
     val scraper = RankListScraper()
 
-    private val view:ProgressBarView by inject()
-
     fun scrapeRankList() = scraper.scrapeRankList()
 }
 
-class ProgressBarFinishView: View() {
+class ProgressBarFinishView: Fragment() {
     override val root = vbox()
 
     init {
