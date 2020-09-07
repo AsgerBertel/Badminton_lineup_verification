@@ -1,6 +1,7 @@
 package gui
 
 import ExcelHandler
+import JsonFileHandler
 import RankListScraper
 import javafx.application.Platform
 import javafx.beans.property.SimpleDoubleProperty
@@ -12,7 +13,7 @@ import kotlin.concurrent.thread
 import kotlin.math.ceil
 import tornadofx.EventBus.RunOn.*
 
-class ProgressBarView: Fragment() {
+class ProgressBarView: View() {
     override val root = vbox()
     private val controller: ProgressBarController by inject()
 
@@ -65,11 +66,17 @@ class ProgressBarView: Fragment() {
 
 class ProgressBarController:Controller() {
     val scraper = RankListScraper()
+    val jsonFileHandler = JsonFileHandler()
+
+
+    private val view:ProgressBarView by inject()
+
 
     fun scrapeRankList() = scraper.scrapeRankList()
+
 }
 
-class ProgressBarFinishView: Fragment() {
+class ProgressBarFinishView: View() {
     override val root = vbox()
 
     init {

@@ -38,11 +38,15 @@ class ExcelHandler(val inputPath:String) {
             row.createCell(4).setCellValue(p.doublesPoints.toDouble())
             row.createCell(5).setCellValue(p.mixedPoints.toDouble())
         }
+        updateTableSize()
+    }
+    fun updateTableSize(){
+        print(xlWb.getTable("RankList").dataRowCount)
+        sheet.getTables().get(0).setDataRowCount(tableHeight)
     }
 
     fun close() {
         val outputStream = FileOutputStream(inputPath)
-
         File(inputPath).delete()
         xlWb.write(outputStream)
         xlWb.close()

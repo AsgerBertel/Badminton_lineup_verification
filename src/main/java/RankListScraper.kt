@@ -75,6 +75,10 @@ class RankListScraper {
 
         progress = 1.0
         println("Scraping finished. Found ${players.size} players.")
+
+        val jsonFileHandler: JsonFileHandler = JsonFileHandler()
+        jsonFileHandler.saveJsonPlayerFile(players)
+        println(jsonFileHandler.loadPlayerFile("PlayerList.json"))
         return players
     }
     private fun clickSearch(page: HtmlPage){
