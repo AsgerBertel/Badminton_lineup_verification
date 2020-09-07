@@ -115,6 +115,7 @@ class RankListScraper {
         val id = parseBadmintonId(list[2].textContent)
         val birthday = idToBirthday(id)
         val name = list[3].firstElementChild.textContent.removeSuffix(" (udl.)")
+        name.removeSuffix(" (EU)")
         val points = list[5].textContent.toInt()
 
         val p = Player(name, birthday, id)

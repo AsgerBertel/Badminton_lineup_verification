@@ -11,4 +11,13 @@ class Player(val name: String, val birthday: Int, val badmintonId: Int) {
             "Name: $name, sex: $sex" +
             "\nID: $badmintonId, birthday: $birthday"+
             "\nPoints: $levelPoints, $singlesPoints, $doublesPoints, $mixedPoints"
+
+    fun getPoints(type:Category):Int {
+        return when(type) {
+            Category.LEVEL -> levelPoints
+            Category.SINGLES -> singlesPoints
+            Category.DOUBLES -> doublesPoints
+            Category.MIXED -> mixedPoints
+        }
+    }
 }

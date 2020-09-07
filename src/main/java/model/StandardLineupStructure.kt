@@ -1,5 +1,6 @@
 package model
 
+import function.LineupVerification
 import model.lineupError.LineupError
 import model.lineupError.PointDifferenceError
 
@@ -22,24 +23,12 @@ class StandardLineupStructure : LineupStructure() {
     var MD2 = DoublesPosition("2. MD", Sex.MALE)
     var MD3 = DoublesPosition("3. MD", Sex.MALE)
 
-    val mixedDoubles = listOf(XD1, XD2)
-    val womensSingles = listOf(WS1, WS2)
-    val mensSingles = listOf(MS1, MS2, MS3, MS4)
-    val womensDoubles = listOf(WD1, WD2)
-    val mensDoubles = listOf(MD1, MD2, MD3)
 
-    override fun verify(): List<LineupError> {
-        val errors = mutableListOf<LineupError>()
+    val mixedDoubles = LineupCategoryGroup(mutableListOf(XD1, XD2), Category.SINGLES, 100)
+    val womensSingles = LineupCategoryGroup(mutableListOf(WS1, WS2), Category.SINGLES, 50)
+    val mensSingles = LineupCategoryGroup(mutableListOf(MS1, MS2, MS3, MS4), Category.SINGLES, 50)
+    val womensDoubles = LineupCategoryGroup(mutableListOf(WD1, WD2), Category.SINGLES, 100)
+    val mensDoubles = LineupCategoryGroup(mutableListOf(MD1, MD2, MD3), Category.SINGLES, 100)
 
-        for (player in mensSingles.withIndex()) {
-            val i = player.index
-            val p1 = player.value.player ?: break
-            val p2 = mensSingles[i + 1].player ?: break
-
-            if (p1.singlesPoints < p2.singlesPoints + 50)
-                errors.add(PointDifferenceError("Too many points between ${p1.name} and ${p2.name}."))
-        }
-
-        return errors
-    }
+    override val categoryGroups = listOf(mixedDoubles, womensSingles, mensSingles, womensDoubles, mensDoubles)
 }

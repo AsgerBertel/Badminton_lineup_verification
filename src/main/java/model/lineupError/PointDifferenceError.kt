@@ -1,5 +1,5 @@
 package model.lineupError
 
-class PointDifferenceError(message:String) : LineupError(message) {
+import model.Position
 
-}
+class PointDifferenceError(pos1: Position, pos2:Position): LineupError("Too many points between $pos1 and $pos2")
