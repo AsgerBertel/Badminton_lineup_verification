@@ -2,11 +2,13 @@ package gui
 
 import gui.ProgressBarView
 import javafx.geometry.Pos
+import javafx.scene.Parent
 import javafx.scene.control.Alert
+import javafx.scene.layout.StackPane
 import tornadofx.*
 import tornadofx.EventBus.RunOn.*
 
-class MainView: View()  {
+class MainView : View()  {
 
     override val root = vbox()
     init {
