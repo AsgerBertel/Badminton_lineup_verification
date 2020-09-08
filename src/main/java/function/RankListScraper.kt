@@ -17,7 +17,7 @@ class RankListScraper {
 
     fun scrapeRankList(): List<Player> {
         println("Starting player update.")
-        val players = mutableListOf<Player>()
+        var players = mutableListOf<Player>()
 
         // Starting up the web client and waits for JavaScript to finish
         val webClient = WebClient()
@@ -91,6 +91,8 @@ class RankListScraper {
     }
 
     private fun findAndClickCorrectVersion(page: HtmlPage){
+
+        var b = false
         val listOfVersions = page.getFirstByXPath<HtmlSelect>("//*[@id=\"DropDownListVersions\"]")
         val vList = (listOfVersions.childElements).toMutableList()
 

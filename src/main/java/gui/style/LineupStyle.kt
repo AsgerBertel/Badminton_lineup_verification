@@ -3,46 +3,43 @@ package gui.style
 import javafx.geometry.Pos
 import javafx.scene.paint.Color
 import javafx.scene.text.FontWeight
-import javafx.scene.text.TextAlignment
 import tornadofx.*
 
 class LineupStyle : Stylesheet() {
+
     companion object {
         val singlesBox by cssclass()
         val singlesPlayerPicker by cssclass()
         val doublesBox by cssclass()
         val doublesPlayerPicker by cssclass()
-        val mixedBox by cssclass()
         val specifierBox by cssclass()
-        val lineupBox by cssclass()
-        val playerName by cssclass()
 
-        val doublesBoxHeight = 60.px
+        val doublesBoxHeight = 70.px
         val singlesBoxHeight = 40.px
-        val playerLabelWidth = 200.px
+        val pickerWidth = 200.px
     }
 
     init {
         singlesBox {
-            backgroundColor += c("#eeeeee")
-            borderColor += box(c("#a1a100"))
+            backgroundColor += c("#cecece")
+            borderColor += box(c("#a1a1a1"))
             minHeight = singlesBoxHeight
-            alignment = Pos.CENTER
+        }
+
+        singlesPlayerPicker {
+            prefWidth = pickerWidth
+            minHeight = singlesBoxHeight
         }
 
         doublesBox {
             backgroundColor += c("#cecece")
-            borderColor += box(c("#a100a1"))
+            borderColor += box(c("#a1a1a1"))
             minHeight = doublesBoxHeight
-            alignment = Pos.CENTER
-            textAlignment = TextAlignment.CENTER
         }
 
-        mixedBox {
-            backgroundColor += c("#c0c0c0")
-            borderColor += box(c("#00a1a1"))
-            minHeight = doublesBoxHeight
-            alignment = Pos.CENTER
+        doublesPlayerPicker {
+            minHeight = doublesBoxHeight / 2
+            prefWidth = pickerWidth
         }
 
         specifierBox {
@@ -51,16 +48,6 @@ class LineupStyle : Stylesheet() {
             fontWeight = FontWeight.BOLD
             fontSize = 16.px
             textFill = Color.DARKRED
-            textAlignment = TextAlignment.CENTER
-        }
-
-        lineupBox {
-            prefHeight = 600.px
-            prefWidth = 400.px
-        }
-
-        playerName {
-            prefWidth = playerLabelWidth
         }
     }
 }

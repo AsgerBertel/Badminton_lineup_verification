@@ -14,4 +14,14 @@ class StandardLineupController : Controller() {
     init {
 
     }
+
+    fun loadPlayersFromJSON(): ObservableList<Player> {
+        val jfh = JsonFileHandler()
+
+        val res = observableList<Player>()
+
+        jfh.loadPlayerFile("""C:\git\Team-match-verify\src\main\resources\PlayerList.json""").forEach { res.add(it) }
+
+        return res
+    }
 }
