@@ -18,11 +18,11 @@ class JsonFileHandler() {
             gson.toJson(players, writer)
         }
     }
-
-    fun loadPlayerFile(pathToFile: String):List<Player>{
-        val bufferedReader: BufferedReader = File(pathToFile).bufferedReader()
-        val playerString = bufferedReader.use { it.readText() }
-        val collectionType: Type? = object : TypeToken<List<Player?>?>() {}.type
-        return gson.fromJson(playerString, collectionType)
+        fun loadPlayerFile(pathToFile: String):List<Player>{
+            val bufferedReader: BufferedReader = File(pathToFile).bufferedReader()
+            val playerString = bufferedReader.use { it.readText() }
+            val collectionType: Type? = object : TypeToken<List<Player?>?>() {}.type
+            return gson.fromJson(playerString, collectionType)
     }
+
 }

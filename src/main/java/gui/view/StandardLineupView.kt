@@ -4,13 +4,14 @@ import gui.controller.StandardLineupController
 import gui.style.LineupStyle
 import javafx.beans.property.SimpleObjectProperty
 import javafx.beans.property.SimpleStringProperty
+import io.JsonFileHandler
 import javafx.collections.ObservableList
 import javafx.scene.layout.HBox
 import model.*
 import tornadofx.*
 import java.lang.Exception
 
-class StandardLineupView(private val players: List<Player> = FakeData.getPlayers(), private val lineup:StandardLineupStructure = FakeData.getLineup()) : View() {
+class StandardLineupView(private val players: List<Player> = JsonFileHandler().loadPlayerFile("""D:\Programming\Team-match-verify\src\main\resources\PlayerList.json"""), private val lineup:StandardLineupStructure = FakeData.getLineup()) : View() {
     override val root = vbox {
         primaryStage.minWidth = 450.0
         primaryStage.minHeight = 870.0
