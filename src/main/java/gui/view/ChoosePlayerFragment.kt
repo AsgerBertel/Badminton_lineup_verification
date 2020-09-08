@@ -16,7 +16,10 @@ class ChoosePlayerFragment(players: ObservableList<Player>) : Fragment() {
     init {
 
         tableview(players) {
-            setPrefSize(275.0, 500.0)
+            root.setPrefSize(500.0, 500.0)
+            columnResizePolicy = SmartResize.POLICY
+            prefHeightProperty().bind(root.heightProperty())
+            prefWidthProperty().bind(root.widthProperty())
             readonlyColumn("Name", Player::name)
             readonlyColumn("ID", Player::badmintonId)
             readonlyColumn("Point", Player::levelPoints)
@@ -29,7 +32,8 @@ class ChoosePlayerFragment(players: ObservableList<Player>) : Fragment() {
                 close()
             }
 
-        }.fixedCellSize
+
+        }
 
     }
 

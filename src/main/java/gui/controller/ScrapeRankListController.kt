@@ -30,5 +30,5 @@ class ScrapeRankListController: Controller() {
         }
     }
 
-    private fun loadPlayersFromJSON() = JsonFileHandler().loadPlayerFile("""C:\git\Team-match-verify\src\main\resources\PlayerList.json""")
+    private fun loadPlayersFromJSON() = JsonFileHandler().loadPlayerFile("""PlayerList.json""")
 }

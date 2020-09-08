@@ -1,11 +1,12 @@
 package gui.view
 
 import gui.style.LineupStyle
+import io.JsonFileHandler
 import javafx.collections.ObservableList
 import model.*
 import tornadofx.*
 
-class StandardLineupView(private val players: List<Player> = FakeData.getPlayers(), private val lineup:StandardLineupStructure = FakeData.getLineup()) : View() {
+class StandardLineupView(private val players: List<Player> = JsonFileHandler().loadPlayerFile("""D:\Programming\Team-match-verify\src\main\resources\PlayerList.json"""), private val lineup:StandardLineupStructure = FakeData.getLineup()) : View() {
     override val root = vbox {
         primaryStage.minWidth = 450.0
         primaryStage.minHeight = 870.0
