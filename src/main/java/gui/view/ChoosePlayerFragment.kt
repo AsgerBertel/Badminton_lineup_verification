@@ -10,17 +10,19 @@ class ChoosePlayerFragment(players: ObservableList<Player>) : Fragment() {
 
     private val selectedPlayerProperty = SimpleObjectProperty<Player>()
     private val selectedPlayer: Player by selectedPlayerProperty
+    private var resultPlayer:Player? = null
 
     init {
         listview(players) {
             bindSelected(selectedPlayerProperty)
             this.onDoubleClick {
+                resultPlayer = selectedPlayer
                 close()
             }
         }
     }
 
     fun getResult(): Player? {
-        return selectedPlayer
+        return resultPlayer
     }
 }

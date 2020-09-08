@@ -1,5 +1,6 @@
 package gui.style
 
+import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.paint.Color
 import javafx.scene.text.FontWeight
@@ -8,59 +9,88 @@ import tornadofx.*
 
 class LineupStyle : Stylesheet() {
     companion object {
+        val standardLineupBox by cssclass()
         val singlesBox by cssclass()
-        val singlesPlayerPicker by cssclass()
+        val singlesPlayerName by cssclass()
         val doublesBox by cssclass()
-        val doublesPlayerPicker by cssclass()
-        val mixedBox by cssclass()
+        val doublesPlayerName by cssclass()
         val specifierBox by cssclass()
-        val lineupBox by cssclass()
         val playerName by cssclass()
+        val buttonsBox by cssclass()
 
+        val nameFontSize = 12.px
         val doublesBoxHeight = 60.px
         val singlesBoxHeight = 40.px
-        val playerLabelWidth = 200.px
+        val playerLabelWidth = 220.px
+
+        val standardLineupMinHeight = (doublesBoxHeight * 7) + (singlesBoxHeight * 6)
+        val standardLineupMinWidth = playerLabelWidth
+        val standardPadding = 5.px
+        val standardRadius = 15.px
+
+        const val betweenPositionSize = 5
+        const val betweenPlayersSize = 1
+        const val betweenLineupGroup = 15
+
+        private const val standardGrey = 230
+        val standardBackgroundColor = c(standardGrey, standardGrey, standardGrey)
+        val playerNameBackgroundColor = c(standardGrey+15, standardGrey+15, standardGrey+15)
+        val standardBackgroundBorderColor = c(standardGrey-20, standardGrey-20, standardGrey-20)
+
+        val legalPlayerColor = c(220,255,220)
+        val illegalPlayerColor = c(255,220,220)
     }
 
     init {
+        standardLineupBox {
+            backgroundColor += standardBackgroundColor
+            minHeight = standardLineupMinHeight
+        }
+
         singlesBox {
-            backgroundColor += c("#eeeeee")
-            borderColor += box(c("#a1a100"))
             minHeight = singlesBoxHeight
+            maxHeight = singlesBoxHeight
             alignment = Pos.CENTER
         }
 
         doublesBox {
-            backgroundColor += c("#cecece")
-            borderColor += box(c("#a100a1"))
-            minHeight = doublesBoxHeight
+            minHeight = doublesBoxHeight + 2 * standardPadding
+            maxHeight = doublesBoxHeight
             alignment = Pos.CENTER
             textAlignment = TextAlignment.CENTER
-        }
-
-        mixedBox {
-            backgroundColor += c("#c0c0c0")
-            borderColor += box(c("#00a1a1"))
-            minHeight = doublesBoxHeight
-            alignment = Pos.CENTER
         }
 
         specifierBox {
-            alignment = Pos.CENTER
-            prefWidth = 50.px
+            padding = box(standardPadding)
             fontWeight = FontWeight.BOLD
             fontSize = 16.px
             textFill = Color.DARKRED
-            textAlignment = TextAlignment.CENTER
+            alignment = Pos.CENTER
         }
 
-        lineupBox {
-            prefHeight = 600.px
-            prefWidth = 400.px
+        doublesPlayerName {
+            padding = box(standardPadding)
+            backgroundRadius += box(standardRadius)
+            backgroundColor += playerNameBackgroundColor
+            fontSize = nameFontSize
+            minHeight = doublesBoxHeight / 2
+            minWidth = playerLabelWidth
+            alignment = Pos.CENTER_LEFT
         }
 
-        playerName {
-            prefWidth = playerLabelWidth
+        singlesPlayerName {
+            backgroundRadius += box(standardRadius)
+            padding = box(standardPadding)
+            backgroundColor += playerNameBackgroundColor
+            fontSize = nameFontSize
+            minHeight = singlesBoxHeight
+            minWidth = playerLabelWidth
+            alignment = Pos.CENTER_LEFT
+        }
+
+        buttonsBox {
+            alignment = Pos.CENTER
+            padding = box(standardPadding)
         }
     }
 }

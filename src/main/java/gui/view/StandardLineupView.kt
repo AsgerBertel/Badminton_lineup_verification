@@ -1,86 +1,200 @@
 package gui.view
 
 import gui.style.LineupStyle
-import gui.viewModel.PlayerConverter
-import gui.viewModel.StandardLineupStructureModel
 import javafx.collections.ObservableList
-import javafx.util.StringConverter
 import model.*
 import tornadofx.*
 
 class StandardLineupView(private val players: List<Player> = FakeData.getPlayers(), private val lineup:StandardLineupStructure = FakeData.getLineup()) : View() {
-    override val root = vbox()
+    override val root = vbox {
+        primaryStage.minWidth = 450.0
+        primaryStage.minHeight = 870.0
+        primaryStage.isResizable = false
+    }
+
     val obPlayers = playersToObservable()
-    val model:StandardLineupStructureModel by inject()
 
     init {
         with(root) {
-            addClass(LineupStyle.lineupBox)
+            addClass(LineupStyle.standardLineupBox)
             for (lcg in lineup.categoryGroups) {
                 vbox {
-                    for (pos in lcg.positions) {
-                        hbox {
-                            when (pos) {
-                                is MixedPosition -> {
-                                    addClass(LineupStyle.doublesBox)
+                    if (lcg != lineup.categoryGroups.first()) {
+                        separator {
+                            this.minHeight = LineupStyle.betweenLineupGroup.toDouble()
+                        }
+                    }
+                    vbox(LineupStyle.betweenPositionSize) {
+                        for (pos in lcg.positions) {
+                            borderpane {
+                                var height: Dimension<Dimension.LinearUnits> = 0.px
+                                when (pos) {
+                                    is MixedPosition -> {
+                                        addClass(LineupStyle.doublesBox)
+                                        height = LineupStyle.doublesBoxHeight
+                                    }
+                                    is DoublesPosition -> {
+                                        addClass(LineupStyle.doublesBox)
+                                        height = LineupStyle.doublesBoxHeight
+                                    }
+                                    is SinglesPosition -> {
+                                        addClass(LineupStyle.singlesBox)
+                                        height = LineupStyle.singlesBoxHeight
+                                    }
                                 }
-                                is DoublesPosition -> {
-                                    addClass(LineupStyle.doublesBox)
+
+                                this.left = label {
+                                    style {
+                                        prefHeight = height
+                                    }
+                                    addClass(LineupStyle.specifierBox)
+                                    text = pos.specifier
                                 }
-                                is SinglesPosition -> {
-                                    addClass(LineupStyle.singlesBox)
-                                }
-                            }
-                            label {
-                                addClass(LineupStyle.specifierBox)
-                                text = pos.specifier
-                            }
-                            when (pos) {
-                                is MixedPosition -> {
-                                    vbox {
-                                        hbox {
-                                            label {
-                                                addClass(LineupStyle.playerName)
-                                            }
-                                            button("Change") {
-                                                action {
-                                                    val choosePlayerFragment = ChoosePlayerFragment(obPlayers).apply { openModal(block = true) }
-                                                    pos.p1 = choosePlayerFragment.getResult() ?: Player()
+                                when (pos) {
+                                    is MixedPosition -> {
+                                        center = vbox(LineupStyle.betweenPlayersSize) {
+                                            borderpane {
+                                                var l = label()
+                                                center = hbox {
+                                                    addClass(LineupStyle.doublesPlayerName)
+                                                    l = label {
+                                                        addClass(LineupStyle.playerName)
+                                                        text = pos.p1.name
+                                                    }
+                                                }
+
+                                                right = hbox(5) {
+                                                    addClass(LineupStyle.buttonsBox)
+                                                    button("Change") {
+                                                        action {
+                                                            val choosePlayerFragment = ChoosePlayerFragment(obPlayers).apply { openModal(block = true) }
+                                                            pos.p1 = choosePlayerFragment.getResult() ?: pos.p1
+                                                            l.text = pos.p1.name
+                                                        }
+                                                    }
+                                                    button("Remove") {
+                                                        action {
+                                                            pos.p1 = Player()
+                                                            l.text = ""
+                                                        }
+                                                    }
                                                 }
                                             }
-                                        }
-                                        hbox {
-                                            val l = label {
-                                                addClass(LineupStyle.playerName)
-                                                text = "Mix dame her"
-                                            }
-                                            button("Change") {
-                                                action {
-                                                    val choosePlayerFragment = ChoosePlayerFragment(obPlayers).apply { openModal(block = true) }
-                                                    
-                                                    pos.p2 = choosePlayerFragment.getResult() ?: Player()
-                                                    l.text = "Hey"
+                                            borderpane {
+                                                var l = label()
+                                                center = hbox {
+                                                    addClass(LineupStyle.doublesPlayerName)
+                                                    l = label {
+                                                        addClass(LineupStyle.playerName)
+                                                        text = pos.p2.name
+                                                    }
+                                                }
+                                                right = hbox(5) {
+                                                    addClass(LineupStyle.buttonsBox)
+                                                    button("Change") {
+                                                        action {
+                                                            val choosePlayerFragment = ChoosePlayerFragment(obPlayers).apply { openModal(block = true) }
+                                                            pos.p2 = choosePlayerFragment.getResult() ?: pos.p2
+                                                            l.text = pos.p2.name
+                                                        }
+                                                    }
+                                                    button("Remove") {
+                                                        action {
+                                                            pos.p2 = Player()
+                                                            l.text = ""
+                                                        }
+                                                    }
                                                 }
                                             }
                                         }
                                     }
-                                }
-                                is DoublesPosition -> {
-                                    vbox {
-                                        label {
-                                            addClass(LineupStyle.playerName)
-                                            text = pos.p1.name
-                                        }
-                                        label {
-                                            addClass(LineupStyle.playerName)
-                                            text = pos.p2.name
+                                    is DoublesPosition -> {
+                                        center = vbox(LineupStyle.betweenPlayersSize) {
+                                            borderpane {
+                                                var l = label()
+                                                center = hbox {
+                                                    addClass(LineupStyle.doublesPlayerName)
+                                                    l = label {
+                                                        addClass(LineupStyle.playerName)
+                                                        text = pos.p1.name
+                                                    }
+                                                }
+
+                                                right = hbox(5) {
+                                                    addClass(LineupStyle.buttonsBox)
+                                                    button("Change") {
+                                                        action {
+                                                            val choosePlayerFragment = ChoosePlayerFragment(obPlayers).apply { openModal(block = true) }
+                                                            pos.p1 = choosePlayerFragment.getResult() ?: pos.p1
+                                                            l.text = pos.p1.name
+                                                        }
+                                                    }
+                                                    button("Remove") {
+                                                        action {
+                                                            pos.p1 = Player()
+                                                            l.text = ""
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            borderpane {
+                                                var l = label()
+                                                center = hbox {
+                                                    addClass(LineupStyle.doublesPlayerName)
+                                                    l = label {
+                                                        addClass(LineupStyle.playerName)
+                                                        text = pos.p2.name
+                                                    }
+                                                }
+                                                right = hbox(5) {
+                                                    addClass(LineupStyle.buttonsBox)
+                                                    button("Change") {
+                                                        action {
+                                                            val choosePlayerFragment = ChoosePlayerFragment(obPlayers).apply { openModal(block = true) }
+                                                            pos.p2 = choosePlayerFragment.getResult() ?: pos.p2
+                                                            l.text = pos.p2.name
+                                                        }
+                                                    }
+                                                    button("Remove") {
+                                                        action {
+                                                            pos.p2 = Player()
+                                                            l.text = ""
+                                                        }
+                                                    }
+                                                }
+                                            }
                                         }
                                     }
-                                }
-                                is SinglesPosition -> {
-                                    label {
-                                        addClass(LineupStyle.playerName)
-                                        text = pos.player.name
+                                    is SinglesPosition -> {
+                                        center = vbox(LineupStyle.betweenPlayersSize) {
+                                            borderpane {
+                                                var l = label()
+                                                center = hbox {
+                                                    addClass(LineupStyle.singlesPlayerName)
+                                                    l = label {
+                                                        addClass(LineupStyle.playerName)
+                                                        text = pos.player.name
+                                                    }
+                                                }
+
+                                                right = hbox(5) {
+                                                    addClass(LineupStyle.buttonsBox)
+                                                    button("Change") {
+                                                        action {
+                                                            val choosePlayerFragment = ChoosePlayerFragment(obPlayers).apply { openModal(block = true) }
+                                                            pos.player = choosePlayerFragment.getResult() ?: pos.player
+                                                            l.text = pos.player.name
+                                                        }
+                                                    }
+                                                    button("Remove") {
+                                                        action {
+                                                            pos.player = Player()
+                                                            l.text = ""
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                             }
