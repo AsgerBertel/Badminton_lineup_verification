@@ -1,5 +1,9 @@
 package model
 
+import function.LineupVerification
+import model.lineupError.LineupError
+import model.lineupError.PointDifferenceError
+
 class StandardLineupStructure : LineupStructure() {
     var XD1 = MixedPosition("1. XD")
     var XD2 = MixedPosition("2. XD")
@@ -20,11 +24,11 @@ class StandardLineupStructure : LineupStructure() {
     var MD3 = DoublesPosition("3. MD", Sex.MALE)
 
 
-    val mixedDoubles = LineupCategoryGroup(mutableListOf(XD1, XD2), Category.MIXED, 100)
+    val mixedDoubles = LineupCategoryGroup(mutableListOf(XD1, XD2), Category.SINGLES, 100)
     val womensSingles = LineupCategoryGroup(mutableListOf(WS1, WS2), Category.SINGLES, 50)
     val mensSingles = LineupCategoryGroup(mutableListOf(MS1, MS2, MS3, MS4), Category.SINGLES, 50)
-    val womensDoubles = LineupCategoryGroup(mutableListOf(WD1, WD2), Category.DOUBLES, 100)
-    val mensDoubles = LineupCategoryGroup(mutableListOf(MD1, MD2, MD3), Category.DOUBLES, 100)
+    val womensDoubles = LineupCategoryGroup(mutableListOf(WD1, WD2), Category.SINGLES, 100)
+    val mensDoubles = LineupCategoryGroup(mutableListOf(MD1, MD2, MD3), Category.SINGLES, 100)
 
     override val categoryGroups = listOf(mixedDoubles, womensSingles, mensSingles, womensDoubles, mensDoubles)
 }
