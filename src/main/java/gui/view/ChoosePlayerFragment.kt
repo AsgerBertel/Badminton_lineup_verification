@@ -34,6 +34,6 @@ class ChoosePlayerFragment(players: ObservableList<Player>) : Fragment() {
     }
 
     fun getResult(): Player? {
-        return selectedPlayer
+        return resultPlayer
     }
 }
