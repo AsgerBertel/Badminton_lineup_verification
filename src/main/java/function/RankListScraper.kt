@@ -3,6 +3,7 @@ package function
 import com.gargoylesoftware.htmlunit.WebClient
 import com.gargoylesoftware.htmlunit.html.*
 import io.JsonFileHandler
+import io.PlayerCleaner
 import model.Player
 import model.Sex
 import java.lang.Exception
@@ -16,7 +17,7 @@ class RankListScraper {
 
     fun scrapeRankList(): List<Player> {
         println("Starting player update.")
-        val players = mutableListOf<Player>()
+        var players = mutableListOf<Player>()
 
         // Starting up the web client and waits for JavaScript to finish
         val webClient = WebClient()
@@ -77,7 +78,8 @@ class RankListScraper {
 
         progress = 1.0
         println("Scraping finished. Found ${players.size} players.")
-
+        val playerCleaner: PlayerCleaner = PlayerCleaner()
+        players = playerCleaner.cleanPlayerList(players) as MutableList<Player>
         val jsonFileHandler: JsonFileHandler = JsonFileHandler()
         jsonFileHandler.saveJsonPlayerFile(players)
         println(jsonFileHandler.loadPlayerFile("PlayerList.json"))
