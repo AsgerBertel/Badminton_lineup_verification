@@ -3,23 +3,32 @@ package gui.controller
 import function.RankListScraper
 import gui.view.ScrapeRankListView
 import gui.view.StandardLineupView
+import io.JsonFileHandler
 import javafx.application.Platform
+import javafx.collections.ObservableList
 import model.Player
 import tornadofx.*
 
 
 class ScrapeRankListController: Controller() {
-    var players = listOf<Player>()
     val scraper = RankListScraper()
-
     val view: ScrapeRankListView by inject()
 
     fun scrape() {
-        //TODO -> add scraping back
-        //players = scraper.scrapeRankList()
+        val scrapedPlayers = scraper.scrapeRankList()
+        var players = listOf<Player>()
+
+        if(scrapedPlayers.isEmpty()) {
+            players = loadPlayersFromJSON()
+            println("Unable to load any players")
+        }
+        else
+            players = scrapedPlayers
 
         Platform.runLater {
             view.replaceWith(StandardLineupView(players))
         }
     }
+
+    private fun loadPlayersFromJSON() = JsonFileHandler().loadPlayerFile("""C:\git\Team-match-verify\src\main\resources\PlayerList.json""")
 }

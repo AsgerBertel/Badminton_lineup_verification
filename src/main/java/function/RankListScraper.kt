@@ -78,19 +78,20 @@ class RankListScraper {
         progress = 1.0
         println("Scraping finished. Found ${players.size} players.")
 
-        val jsonFileHandler: JsonFileHandler = JsonFileHandler()
-        jsonFileHandler.saveJsonPlayerFile(players)
-        println(jsonFileHandler.loadPlayerFile("PlayerList.json"))
+        //val jsonFileHandler = JsonFileHandler()
+        //jsonFileHandler.saveJsonPlayerFile(players)
+        //println(jsonFileHandler.loadPlayerFile("PlayerList.json"))
         return players
     }
-    private fun clickSearch(page: HtmlPage){
-        val button = page.getFirstByXPath<DomElement>("//*[@id=\"LinkButtonSearch\"]").click<HtmlPage>()
-    }
-    private fun findAndClickCorrectVersion(page: HtmlPage){
 
-        var b = false
+    private fun clickSearch(page: HtmlPage){
+        page.getFirstByXPath<DomElement>("//*[@id=\"LinkButtonSearch\"]").click<HtmlPage>()
+    }
+
+    private fun findAndClickCorrectVersion(page: HtmlPage){
         val listOfVersions = page.getFirstByXPath<HtmlSelect>("//*[@id=\"DropDownListVersions\"]")
-        var vList = (listOfVersions.childElements).toMutableList()
+        val vList = (listOfVersions.childElements).toMutableList()
+
         for(element in  vList){
             if(element.textContent.endsWith("(senior)", true)) {
                 element.click<(HtmlPage)>()

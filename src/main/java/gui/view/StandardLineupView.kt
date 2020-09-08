@@ -1,50 +1,87 @@
 package gui.view
 
 import gui.style.LineupStyle
-import gui.controller.StandardLineupController
-import javafx.beans.property.SimpleStringProperty
+import gui.viewModel.PlayerConverter
+import gui.viewModel.StandardLineupStructureModel
 import javafx.collections.ObservableList
-import javafx.geometry.Pos
-import model.Player
+import javafx.util.StringConverter
+import model.*
 import tornadofx.*
 
-class StandardLineupView(private val playersInput: List<Player>) : View() {
+class StandardLineupView(private val players: List<Player> = FakeData.getPlayers(), private val lineup:StandardLineupStructure = FakeData.getLineup()) : View() {
     override val root = vbox()
-
-    val controller: StandardLineupController by inject()
-    val players = loadPlayers()
-
-    val firstWSName = SimpleStringProperty("Empty")
+    val obPlayers = playersToObservable()
+    val model:StandardLineupStructureModel by inject()
 
     init {
         with(root) {
-            vbox {
-                hbox {// 1. XD
-                    addClass(LineupStyle.doublesBox)
-                    label("1. XD") {
-                        addClass(LineupStyle.specifierBox)
-                    }
-                    vbox {
-                        textfield {
-                            addClass(LineupStyle.doublesPlayerPicker)
-                        }
-                        textfield {
-                            addClass(LineupStyle.doublesPlayerPicker)
-                        }
-                    }
-                }.alignment = Pos.CENTER_LEFT
-                hbox { // 1. WS
-                    addClass(LineupStyle.singlesBox)
-                    label("1. WS") {
-                        addClass(LineupStyle.specifierBox)
-                    }
-                    label {
-                        textProperty().bind(firstWSName)
-                    }
-                    button("Choose") {
-                        action {
-                            val view = ChoosePlayerFragment(players).apply { openModal(block = true) }
-                            firstWSName.set(if(view.getResult() != null) view.getResult()!!.name else "Still empty")
+            addClass(LineupStyle.lineupBox)
+            for (lcg in lineup.categoryGroups) {
+                vbox {
+                    for (pos in lcg.positions) {
+                        hbox {
+                            when (pos) {
+                                is MixedPosition -> {
+                                    addClass(LineupStyle.doublesBox)
+                                }
+                                is DoublesPosition -> {
+                                    addClass(LineupStyle.doublesBox)
+                                }
+                                is SinglesPosition -> {
+                                    addClass(LineupStyle.singlesBox)
+                                }
+                            }
+                            label {
+                                addClass(LineupStyle.specifierBox)
+                                text = pos.specifier
+                            }
+                            when (pos) {
+                                is MixedPosition -> {
+                                    vbox {
+                                        hbox {
+                                            label {
+                                                addClass(LineupStyle.playerName)
+                                            }
+                                            button("Change") {
+                                                action {
+                                                    val choosePlayerFragment = ChoosePlayerFragment(obPlayers).apply { openModal(block = true) }
+                                                    pos.p1 = choosePlayerFragment.getResult() ?: Player()
+                                                }
+                                            }
+                                        }
+                                        hbox {
+                                            label {
+                                                addClass(LineupStyle.playerName)
+                                                text = "Mix dame her"
+                                            }
+                                            button("Change") {
+                                                action {
+                                                    val choosePlayerFragment = ChoosePlayerFragment(obPlayers).apply { openModal(block = true) }
+                                                    pos.p1 = choosePlayerFragment.getResult() ?: Player()
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                is DoublesPosition -> {
+                                    vbox {
+                                        label {
+                                            addClass(LineupStyle.playerName)
+                                            text = pos.p1.name
+                                        }
+                                        label {
+                                            addClass(LineupStyle.playerName)
+                                            text = pos.p2.name
+                                        }
+                                    }
+                                }
+                                is SinglesPosition -> {
+                                    label {
+                                        addClass(LineupStyle.playerName)
+                                        text = pos.player.name
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -52,13 +89,11 @@ class StandardLineupView(private val playersInput: List<Player>) : View() {
         }
     }
 
-    private fun loadPlayers(): ObservableList<Player> {
+
+    private fun playersToObservable(): ObservableList<Player> {
         val res = observableList<Player>()
 
-        if(playersInput.isEmpty())
-            controller.loadPlayersFromJSON().forEach { res.add(it) }
-        else
-            playersInput.forEach { res.add(it) }
+        res.addAll(players)
 
         return res
     }
