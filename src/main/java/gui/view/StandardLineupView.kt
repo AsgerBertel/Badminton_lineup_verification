@@ -1,9 +1,14 @@
 package gui.view
 
+import gui.controller.StandardLineupController
 import gui.style.LineupStyle
+import javafx.beans.property.SimpleObjectProperty
+import javafx.beans.property.SimpleStringProperty
 import javafx.collections.ObservableList
+import javafx.scene.layout.HBox
 import model.*
 import tornadofx.*
+import java.lang.Exception
 
 class StandardLineupView(private val players: List<Player> = FakeData.getPlayers(), private val lineup:StandardLineupStructure = FakeData.getLineup()) : View() {
     override val root = vbox {
@@ -12,10 +17,19 @@ class StandardLineupView(private val players: List<Player> = FakeData.getPlayers
         primaryStage.isResizable = false
     }
 
+    val controller:StandardLineupController by inject()
     val obPlayers = playersToObservable()
+    var playerFieldCount = 0
+    val playersStyleProperty = mutableListOf<Pair<HBox, SimpleStringProperty>>()
+    val hboxList = mutableListOf<Pair<HBox, Category>>()
 
     init {
         with(root) {
+            button("Verify!") {
+                action {
+                    controller.verify()
+                }
+            }
             addClass(LineupStyle.standardLineupBox)
             for (lcg in lineup.categoryGroups) {
                 vbox {
@@ -61,6 +75,7 @@ class StandardLineupView(private val players: List<Player> = FakeData.getPlayers
                                                         addClass(LineupStyle.playerName)
                                                         text = pos.p1.name
                                                     }
+                                                    bindPlayerToColorProperty(this, Category.MIXED)
                                                 }
 
                                                 right = hbox(5) {
@@ -88,6 +103,7 @@ class StandardLineupView(private val players: List<Player> = FakeData.getPlayers
                                                         addClass(LineupStyle.playerName)
                                                         text = pos.p2.name
                                                     }
+                                                    bindPlayerToColorProperty(this, Category.MIXED)
                                                 }
                                                 right = hbox(5) {
                                                     addClass(LineupStyle.buttonsBox)
@@ -118,6 +134,7 @@ class StandardLineupView(private val players: List<Player> = FakeData.getPlayers
                                                         addClass(LineupStyle.playerName)
                                                         text = pos.p1.name
                                                     }
+                                                    bindPlayerToColorProperty(this, Category.DOUBLES)
                                                 }
 
                                                 right = hbox(5) {
@@ -145,6 +162,7 @@ class StandardLineupView(private val players: List<Player> = FakeData.getPlayers
                                                         addClass(LineupStyle.playerName)
                                                         text = pos.p2.name
                                                     }
+                                                    bindPlayerToColorProperty(this, Category.DOUBLES)
                                                 }
                                                 right = hbox(5) {
                                                     addClass(LineupStyle.buttonsBox)
@@ -175,6 +193,7 @@ class StandardLineupView(private val players: List<Player> = FakeData.getPlayers
                                                         addClass(LineupStyle.playerName)
                                                         text = pos.player.name
                                                     }
+                                                    bindPlayerToColorProperty(this, Category.SINGLES)
                                                 }
 
                                                 right = hbox(5) {
@@ -205,6 +224,9 @@ class StandardLineupView(private val players: List<Player> = FakeData.getPlayers
         }
     }
 
+    private fun bindPlayerToColorProperty(h: HBox, cat:Category) {
+        hboxList.add(Pair(h, cat))
+    }
 
     private fun playersToObservable(): ObservableList<Player> {
         val res = observableList<Player>()
