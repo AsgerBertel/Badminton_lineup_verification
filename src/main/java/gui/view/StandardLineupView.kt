@@ -50,7 +50,7 @@ class StandardLineupView(private val players: List<Player> = FakeData.getPlayers
                                             }
                                         }
                                         hbox {
-                                            label {
+                                            val l = label {
                                                 addClass(LineupStyle.playerName)
                                                 text = "Mix dame her"
                                             }
