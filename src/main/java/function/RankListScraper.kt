@@ -2,7 +2,6 @@ package function
 
 import com.gargoylesoftware.htmlunit.WebClient
 import com.gargoylesoftware.htmlunit.html.*
-import io.JsonFileHandler
 import model.Player
 import model.Sex
 import java.lang.Exception
@@ -115,8 +114,8 @@ class RankListScraper {
         val list = elem.childElements.toMutableList()
         val id = parseBadmintonId(list[2].textContent)
         val birthday = idToBirthday(id)
-        val name = list[3].firstElementChild.textContent.removeSuffix(" (udl.)")
-        name.removeSuffix(" (EU)")
+        var name = list[3].firstElementChild.textContent.removeSuffix(" (udl.)")
+        name = name.removeSuffix(" (EU)")
         val points = list[5].textContent.toInt()
 
         val p = Player(name, birthday, id)

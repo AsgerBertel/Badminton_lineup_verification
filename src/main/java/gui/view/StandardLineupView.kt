@@ -57,7 +57,8 @@ class StandardLineupView(private val players: List<Player> = FakeData.getPlayers
                                             button("Change") {
                                                 action {
                                                     val choosePlayerFragment = ChoosePlayerFragment(obPlayers).apply { openModal(block = true) }
-                                                    pos.p1 = choosePlayerFragment.getResult() ?: Player()
+                                                    
+                                                    pos.p2 = choosePlayerFragment.getResult() ?: Player()
                                                     l.text = "Hey"
                                                 }
                                             }
