@@ -25,6 +25,10 @@ class StandardLineupView(val players: List<Player> = JsonFileHandler().loadPlaye
     val hboxList = mutableListOf<Pair<HBox, Category>>()
     val pointsList = mutableListOf<Pair<Label, Position>>()
 
+    override fun onBeforeShow() {
+        controller.verify()
+    }
+
     init {
         with(root) {
             addClass(LineupStyle.standardLineupBox)
