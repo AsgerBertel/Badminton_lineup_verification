@@ -11,19 +11,21 @@ import javafx.scene.layout.HBox
 import model.*
 import tornadofx.*
 
-class StandardLineupView(val players: List<Player> = JsonFileHandler().loadPlayerFile("""C:\git\Team-match-verify\src\main\resources\PlayerList.json"""), val lineup:StandardLineupStructure = FakeData.getLineup()) : View() {
+
+class StandardLineupView(players: List<Player>? = null, val lineup: StandardLineupStructure = FakeData.getLineup()) : View() {
     override val root = vbox {
         primaryStage.minWidth = 500.0
         primaryStage.minHeight = 940.0
         primaryStage.isResizable = false
     }
+    val players: List<Player> = players ?: JsonFileHandler().loadPlayerFile(resources["PlayerList.json"])
 
     val controller:StandardLineupController by inject()
     val obPlayers = playersToObservable()
     val hboxList = mutableListOf<Pair<HBox, Category>>()
     val pointsList = mutableListOf<Pair<Label, Position>>()
 
-    init {
+    init 
         with(root) {
             addClass(LineupStyle.standardLineupBox)
             for (lcg in lineup.categoryGroups) {
@@ -262,8 +264,10 @@ class StandardLineupView(val players: List<Player> = JsonFileHandler().loadPlaye
     private fun playersToObservable(): ObservableList<Player> {
         val res = observableList<Player>()
 
-        res.addAll(players)
+        res.addAll(players!!)
 
         return res
     }
+
+    fun getDefaultPlayers(): List<Player> = JsonFileHandler().loadPlayerFile(resources["PlayerList.json"])
 }
