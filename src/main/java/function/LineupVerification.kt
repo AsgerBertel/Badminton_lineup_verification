@@ -2,6 +2,7 @@ package function
 
 import model.*
 import model.lineupError.*
+import kotlin.reflect.full.isSubclassOf
 
 class LineupVerification {
     companion object {
@@ -25,10 +26,10 @@ class LineupVerification {
 
         private fun setIllegality(l:List<PositionSpot>) {
             l.forEach {
-                if (it.errors.any { s -> s is LineupWarning })
-                    it.verdict = IllegalityVerdict.WARNING
-                else if(it.errors.any { s -> s is LineupError })
+                if (it.errors.any { s -> s is LineupError })
                     it.verdict = IllegalityVerdict.ILLEGAL
+                else if (it.errors.any { s -> s is LineupWarning })
+                    it.verdict = IllegalityVerdict.WARNING
                 else
                     it.verdict = IllegalityVerdict.LEGAL
             }
@@ -55,8 +56,8 @@ class LineupVerification {
         }
 
         private fun verifyTwoPositionsPerPlayer(spots: List<PositionSpot>) {
-            for (player in spots.map { it.player }) {
-                val count = spots.count {it.player == player}
+            for (player in spots.map { it.player }.distinctBy { it.badmintonId }) {
+                val count = spots.count { it.player == player }
                 if (count < 2) {
                     spots.filter { it.player == player }.forEach {
                         it.errors.add(TooFewOccurrencesWarning(player))
