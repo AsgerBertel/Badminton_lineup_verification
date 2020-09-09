@@ -2,16 +2,14 @@ package model
 
 import exception.WrongSexException
 import function.IllegalityVerdict
+import javafx.beans.property.SimpleObjectProperty
 import model.lineupError.LineupError
 import model.lineupError.LineupVerdict
+import tornadofx.*
 
 class PositionSpot(val sexReq:Sex?) {
-    var player:Player = Player()
-        set(value) {
-            if (value.badmintonId != 0 && sexReq != null && value.sex != sexReq)
-                throw WrongSexException("Wrong sex of player. Expected $sexReq but got ${player.sex}.")
-            field = value
-        }
+    val playerProperty = SimpleObjectProperty(Player())
+    var player:Player by playerProperty
 
     var verdict = IllegalityVerdict.UNKNOWN
 

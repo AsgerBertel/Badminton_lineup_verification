@@ -5,6 +5,7 @@ import javafx.beans.Observable
 import javafx.beans.binding.ObjectBinding
 import javafx.beans.property.SimpleObjectProperty
 import javafx.beans.value.ObservableObjectValue
+import javafx.util.StringConverter
 import model.Player
 import model.PositionSpot
 import tornadofx.View
@@ -21,7 +22,7 @@ class TestView : View() {
     init {
         with(root) {
             val l = label("Navn") {
-                text = player.name
+                bind(playerProperty, converter = MyConverter())
             }
 
             button("Change Player") {
@@ -39,12 +40,8 @@ class TestView : View() {
     }
 }
 
-class PlayerO(spot:PositionSpot) : Observable {
-    override fun addListener(p0: InvalidationListener?) {
+class MyConverter: StringConverter<Player>() {
+    override fun toString(p0: Player): String = p0.name
 
-    }
-
-    override fun removeListener(p0: InvalidationListener?) {
-        TODO("Not yet implemented")
-    }
+    override fun fromString(p0: String): Player = Player()
 }

@@ -1,7 +1,9 @@
 package gui.view
 
+import gui.PlayerStringConverter
 import gui.controller.StandardLineupController
 import gui.style.LineupStyle
+import gui.viewModel.PlayerConverter
 import io.JsonFileHandler
 import javafx.beans.property.SimpleStringProperty
 import javafx.collections.ObservableList
@@ -79,7 +81,7 @@ class StandardLineupView(val players: List<Player> = JsonFileHandler().loadPlaye
                                                     addClass(LineupStyle.doublesPlayerName)
                                                     l = label {
                                                         addClass(LineupStyle.playerName)
-                                                        text = pos.spot1.player.name
+                                                        bind(pos.spot1.playerProperty, converter = PlayerStringConverter())
                                                     }
                                                     bindPlayerToColorProperty(this, Category.MIXED)
                                                 }
@@ -92,16 +94,13 @@ class StandardLineupView(val players: List<Player> = JsonFileHandler().loadPlaye
                                                             if(choosePlayerFragment.getResult() != null) {
                                                                 pos.spot1.player = choosePlayerFragment.getResult()
                                                                         ?: pos.spot1.player
-
                                                                 controller.verify()
                                                             }
-                                                            l.text = pos.spot1.player.name
                                                         }
                                                     }
                                                     button("Remove") {
                                                         action {
                                                             pos.spot1.player = Player()
-                                                            l.text = ""
                                                         }
                                                     }
                                                 }
@@ -112,7 +111,7 @@ class StandardLineupView(val players: List<Player> = JsonFileHandler().loadPlaye
                                                     addClass(LineupStyle.doublesPlayerName)
                                                     l = label {
                                                         addClass(LineupStyle.playerName)
-                                                        text = pos.spot2.player.name
+                                                        bind(pos.spot2.playerProperty, converter = PlayerStringConverter())
                                                     }
                                                     bindPlayerToColorProperty(this, Category.MIXED)
                                                 }
@@ -127,13 +126,11 @@ class StandardLineupView(val players: List<Player> = JsonFileHandler().loadPlaye
 
                                                                 controller.verify()
                                                             }
-                                                            l.text = pos.spot2.player.name
                                                         }
                                                     }
                                                     button("Remove") {
                                                         action {
                                                             pos.spot2.player = Player()
-                                                            l.text = ""
                                                         }
                                                     }
                                                 }
@@ -148,7 +145,7 @@ class StandardLineupView(val players: List<Player> = JsonFileHandler().loadPlaye
                                                     addClass(LineupStyle.doublesPlayerName)
                                                     l = label {
                                                         addClass(LineupStyle.playerName)
-                                                        text = pos.spot1.player.name
+                                                        bind(pos.spot1.playerProperty, converter = PlayerStringConverter())
                                                     }
                                                     bindPlayerToColorProperty(this, Category.DOUBLES)
                                                 }
@@ -164,13 +161,11 @@ class StandardLineupView(val players: List<Player> = JsonFileHandler().loadPlaye
 
                                                                 controller.verify()
                                                             }
-                                                            l.text = pos.spot1.player.name
                                                         }
                                                     }
                                                     button("Remove") {
                                                         action {
                                                             pos.spot1.player = Player()
-                                                            l.text = ""
                                                         }
                                                     }
                                                 }
@@ -181,7 +176,7 @@ class StandardLineupView(val players: List<Player> = JsonFileHandler().loadPlaye
                                                     addClass(LineupStyle.doublesPlayerName)
                                                     l = label {
                                                         addClass(LineupStyle.playerName)
-                                                        text = pos.spot2.player.name
+                                                        bind(pos.spot2.playerProperty, converter = PlayerStringConverter())
                                                     }
                                                     bindPlayerToColorProperty(this, Category.DOUBLES)
                                                 }
@@ -217,7 +212,7 @@ class StandardLineupView(val players: List<Player> = JsonFileHandler().loadPlaye
                                                     addClass(LineupStyle.singlesPlayerName)
                                                     l = label {
                                                         addClass(LineupStyle.playerName)
-                                                        text = pos.spot.player.name
+                                                        bind(pos.spot.playerProperty, converter = PlayerStringConverter())
                                                     }
                                                     bindPlayerToColorProperty(this, Category.SINGLES)
                                                 }
@@ -233,13 +228,11 @@ class StandardLineupView(val players: List<Player> = JsonFileHandler().loadPlaye
 
                                                                 controller.verify()
                                                             }
-                                                            l.text = pos.spot.player.name
                                                         }
                                                     }
                                                     button("Remove") {
                                                         action {
                                                             pos.spot.player = Player()
-                                                            l.text = ""
                                                         }
                                                     }
                                                 }
