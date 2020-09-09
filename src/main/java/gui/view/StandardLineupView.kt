@@ -1,13 +1,10 @@
 package gui.view
 
 import gui.PlayerStringConverter
-import com.sun.javafx.scene.control.skin.Utils.getResource
+import gui.IntConverter
 import gui.controller.StandardLineupController
 import gui.style.LineupStyle
-import gui.viewModel.PlayerConverter
 import io.JsonFileHandler
-import javafx.beans.property.SimpleIntegerProperty
-import javafx.beans.property.SimpleStringProperty
 import javafx.collections.ObservableList
 import javafx.geometry.Orientation
 import javafx.scene.control.Label
@@ -71,7 +68,7 @@ class StandardLineupView(val players: List<Player> = JsonFileHandler().loadPlaye
                                             prefHeight = height
                                         }
                                         addClass(LineupStyle.pointsBox)
-                                        text = pos.getPoints().toString()
+                                        textProperty().bind(pos.pointsProperty.asString())
                                         pointsList.add(Pair(this, pos))
                                     }
                                 }

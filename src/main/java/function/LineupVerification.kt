@@ -2,6 +2,7 @@ package function
 
 import model.*
 import model.lineupError.*
+import kotlin.reflect.typeOf
 
 class LineupVerification {
     companion object {
@@ -27,23 +28,23 @@ class LineupVerification {
             l.forEach {
                 if (it.errors.isEmpty())
                     it.verdict = IllegalityVerdict.LEGAL
-                else if(it.errors.any { s -> s is PointDifferenceError })
+                else if(it.errors.any { s -> s is LineupError })
                     it.verdict = IllegalityVerdict.ILLEGAL
-                else if (it.errors.any { s -> s is TooManyOccurrencesError })
+                else if (it.errors.any { s -> s is LineupWarning })
                     it.verdict = IllegalityVerdict.WARNING
             }
         }
 
         private fun verifyPoints(lc: LineupCategoryGroup) {
             var lastPos = lc.positions[0]
-            var lastPoints = lastPos.getPoints()
+            var lastPoints = lastPos.points
 
             for (i in 1 until lc.positions.size) {
                 if (lastPoints == 0)
                     break
 
                 val currentPos = lc.positions[i]
-                val currentPoints = currentPos.getPoints() ?: break
+                val currentPoints = currentPos.points ?: break
 
                 if (lastPoints + lc.allowedPointMargin < currentPoints) {
                     errorToPosition(lastPos, PointDifferenceError(lastPos, currentPos))

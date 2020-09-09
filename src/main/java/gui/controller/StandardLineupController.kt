@@ -16,12 +16,7 @@ class StandardLineupController : Controller() {
 
     fun verify() {
         LineupVerification.verifyLineup(view.lineup)
-        setPoints()
         setSpotsVerdict()
-    }
-
-    private fun setPoints() {
-        view.pointsList.forEach { it.first.text = it.second.getPoints().toString() }
     }
 
     private fun setSpotsVerdict() {
