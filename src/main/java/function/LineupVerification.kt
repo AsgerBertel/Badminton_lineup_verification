@@ -14,6 +14,8 @@ class LineupVerification {
                 verifyPoints(lcg)
             }
 
+            verifyTwoPositionsPerPlayer(lineup)
+
             setIllegality(spots)
         }
 
@@ -49,6 +51,22 @@ class LineupVerification {
 
                 lastPos = currentPos
                 lastPoints = currentPoints
+            }
+        }
+
+        private fun verifyTwoPositionsPerPlayer(lineup: LineupStructure) {
+            val luser = lineup.serialize()
+            for (player in luser.map { it.player }) {
+                val count = luser.count {it.player == player}
+                if (count < 2) {
+                    luser.filter { it.player == player }.forEach {
+                        it.errors.add(TooFewOccurrencesWarning(player))
+                    }
+                } else if (count > 2) {
+                    luser.filter { it.player == player }.forEach {
+                        it.errors.add(TooManyOccurrencesError(player, count))
+                    }
+                }
             }
         }
 

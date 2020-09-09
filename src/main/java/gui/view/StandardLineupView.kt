@@ -25,7 +25,7 @@ class StandardLineupView(players: List<Player>? = null, val lineup: StandardLine
     val hboxList = mutableListOf<Pair<HBox, Category>>()
     val pointsList = mutableListOf<Pair<Label, Position>>()
 
-    init 
+    init {
         with(root) {
             addClass(LineupStyle.standardLineupBox)
             for (lcg in lineup.categoryGroups) {
