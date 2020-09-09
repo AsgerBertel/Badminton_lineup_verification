@@ -14,7 +14,7 @@ class LineupVerification {
                 verifyPoints(lcg)
             }
 
-            verifyTwoPositionsPerPlayer(lineup)
+            verifyTwoPositionsPerPlayer(spots)
 
             setIllegality(spots)
         }
@@ -25,12 +25,12 @@ class LineupVerification {
 
         private fun setIllegality(l:List<PositionSpot>) {
             l.forEach {
-                if (it.errors.isEmpty())
-                    it.verdict = IllegalityVerdict.LEGAL
-                else if(it.errors.any { s -> s is PointDifferenceError })
-                    it.verdict = IllegalityVerdict.ILLEGAL
-                else if (it.errors.any { s -> s is TooManyOccurrencesError })
+                if (it.errors.any { s -> s is LineupWarning })
                     it.verdict = IllegalityVerdict.WARNING
+                else if(it.errors.any { s -> s is LineupError })
+                    it.verdict = IllegalityVerdict.ILLEGAL
+                else
+                    it.verdict = IllegalityVerdict.LEGAL
             }
         }
 
@@ -54,16 +54,15 @@ class LineupVerification {
             }
         }
 
-        private fun verifyTwoPositionsPerPlayer(lineup: LineupStructure) {
-            val luser = lineup.serialize()
-            for (player in luser.map { it.player }) {
-                val count = luser.count {it.player == player}
+        private fun verifyTwoPositionsPerPlayer(spots: List<PositionSpot>) {
+            for (player in spots.map { it.player }) {
+                val count = spots.count {it.player == player}
                 if (count < 2) {
-                    luser.filter { it.player == player }.forEach {
+                    spots.filter { it.player == player }.forEach {
                         it.errors.add(TooFewOccurrencesWarning(player))
                     }
                 } else if (count > 2) {
-                    luser.filter { it.player == player }.forEach {
+                    spots.filter { it.player == player }.forEach {
                         it.errors.add(TooManyOccurrencesError(player, count))
                     }
                 }
