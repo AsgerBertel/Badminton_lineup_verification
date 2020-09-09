@@ -19,6 +19,7 @@ class LineupStyle : Stylesheet() {
         val doublesPlayerNameIllegal by cssclass()
         val doublesPlayerNameLegal by cssclass()
         val specifierBox by cssclass()
+        val pointsBox by cssclass()
         val playerName by cssclass()
         val buttonsBox by cssclass()
 
@@ -70,6 +71,15 @@ class LineupStyle : Stylesheet() {
             fontSize = 16.px
             textFill = Color.DARKRED
             alignment = Pos.CENTER
+            minWidth = 60.px
+        }
+
+        pointsBox {
+            padding = box(standardPadding)
+            fontWeight = FontWeight.BOLD
+            fontSize = 14.px
+            alignment = Pos.CENTER
+            minWidth = 40.px
         }
 
         doublesPlayerName {

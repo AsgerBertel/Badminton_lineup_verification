@@ -2,32 +2,29 @@ package gui.view
 
 import gui.controller.StandardLineupController
 import gui.style.LineupStyle
+import io.JsonFileHandler
 import javafx.beans.property.SimpleStringProperty
 import javafx.collections.ObservableList
+import javafx.geometry.Orientation
+import javafx.scene.control.Label
 import javafx.scene.layout.HBox
 import model.*
 import tornadofx.*
 
-class StandardLineupView(private val players: List<Player> = FakeData.getPlayers(), private val lineup:StandardLineupStructure = FakeData.getLineup()) : View() {
+class StandardLineupView(val players: List<Player> = JsonFileHandler().loadPlayerFile("""C:\git\Team-match-verify\src\main\resources\PlayerList.json"""), val lineup:StandardLineupStructure = FakeData.getLineup()) : View() {
     override val root = vbox {
-        primaryStage.minWidth = 450.0
-        primaryStage.minHeight = 870.0
+        primaryStage.minWidth = 500.0
+        primaryStage.minHeight = 940.0
         primaryStage.isResizable = false
     }
 
     val controller:StandardLineupController by inject()
     val obPlayers = playersToObservable()
-    var playerFieldCount = 0
-    val playersStyleProperty = mutableListOf<Pair<HBox, SimpleStringProperty>>()
     val hboxList = mutableListOf<Pair<HBox, Category>>()
+    val pointsList = mutableListOf<Pair<Label, Position>>()
 
     init {
         with(root) {
-            button("Verify!") {
-                action {
-                    controller.verify()
-                }
-            }
             addClass(LineupStyle.standardLineupBox)
             for (lcg in lineup.categoryGroups) {
                 vbox {
@@ -55,12 +52,23 @@ class StandardLineupView(private val players: List<Player> = FakeData.getPlayers
                                     }
                                 }
 
-                                this.left = label {
-                                    style {
-                                        prefHeight = height
+                                this.left = hbox {
+                                    label {
+                                        style {
+                                            prefHeight = height
+                                        }
+                                        addClass(LineupStyle.specifierBox)
+                                        text = pos.specifier
                                     }
-                                    addClass(LineupStyle.specifierBox)
-                                    text = pos.specifier
+                                    separator(orientation = Orientation.VERTICAL)
+                                    label {
+                                        style {
+                                            prefHeight = height
+                                        }
+                                        addClass(LineupStyle.pointsBox)
+                                        text = pos.getPoints().toString()
+                                        pointsList.add(Pair(this, pos))
+                                    }
                                 }
                                 when (pos) {
                                     is MixedPosition -> {
@@ -71,7 +79,7 @@ class StandardLineupView(private val players: List<Player> = FakeData.getPlayers
                                                     addClass(LineupStyle.doublesPlayerName)
                                                     l = label {
                                                         addClass(LineupStyle.playerName)
-                                                        text = pos.p1.name
+                                                        text = pos.spot1.player.name
                                                     }
                                                     bindPlayerToColorProperty(this, Category.MIXED)
                                                 }
@@ -81,13 +89,18 @@ class StandardLineupView(private val players: List<Player> = FakeData.getPlayers
                                                     button("Change") {
                                                         action {
                                                             val choosePlayerFragment = ChoosePlayerFragment(obPlayers).apply { openModal(block = true) }
-                                                            pos.p1 = choosePlayerFragment.getResult() ?: pos.p1
-                                                            l.text = pos.p1.name
+                                                            if(choosePlayerFragment.getResult() != null) {
+                                                                pos.spot1.player = choosePlayerFragment.getResult()
+                                                                        ?: pos.spot1.player
+
+                                                                controller.verify()
+                                                            }
+                                                            l.text = pos.spot1.player.name
                                                         }
                                                     }
                                                     button("Remove") {
                                                         action {
-                                                            pos.p1 = Player()
+                                                            pos.spot1.player = Player()
                                                             l.text = ""
                                                         }
                                                     }
@@ -99,7 +112,7 @@ class StandardLineupView(private val players: List<Player> = FakeData.getPlayers
                                                     addClass(LineupStyle.doublesPlayerName)
                                                     l = label {
                                                         addClass(LineupStyle.playerName)
-                                                        text = pos.p2.name
+                                                        text = pos.spot2.player.name
                                                     }
                                                     bindPlayerToColorProperty(this, Category.MIXED)
                                                 }
@@ -108,13 +121,18 @@ class StandardLineupView(private val players: List<Player> = FakeData.getPlayers
                                                     button("Change") {
                                                         action {
                                                             val choosePlayerFragment = ChoosePlayerFragment(obPlayers).apply { openModal(block = true) }
-                                                            pos.p2 = choosePlayerFragment.getResult() ?: pos.p2
-                                                            l.text = pos.p2.name
+                                                            if(choosePlayerFragment.getResult() != null) {
+                                                                pos.spot2.player = choosePlayerFragment.getResult()
+                                                                        ?: pos.spot2.player
+
+                                                                controller.verify()
+                                                            }
+                                                            l.text = pos.spot2.player.name
                                                         }
                                                     }
                                                     button("Remove") {
                                                         action {
-                                                            pos.p2 = Player()
+                                                            pos.spot2.player = Player()
                                                             l.text = ""
                                                         }
                                                     }
@@ -130,7 +148,7 @@ class StandardLineupView(private val players: List<Player> = FakeData.getPlayers
                                                     addClass(LineupStyle.doublesPlayerName)
                                                     l = label {
                                                         addClass(LineupStyle.playerName)
-                                                        text = pos.p1.name
+                                                        text = pos.spot1.player.name
                                                     }
                                                     bindPlayerToColorProperty(this, Category.DOUBLES)
                                                 }
@@ -140,13 +158,18 @@ class StandardLineupView(private val players: List<Player> = FakeData.getPlayers
                                                     button("Change") {
                                                         action {
                                                             val choosePlayerFragment = ChoosePlayerFragment(obPlayers).apply { openModal(block = true) }
-                                                            pos.p1 = choosePlayerFragment.getResult() ?: pos.p1
-                                                            l.text = pos.p1.name
+                                                            if(choosePlayerFragment.getResult() != null) {
+                                                                pos.spot1.player = choosePlayerFragment.getResult()
+                                                                        ?: pos.spot1.player
+
+                                                                controller.verify()
+                                                            }
+                                                            l.text = pos.spot1.player.name
                                                         }
                                                     }
                                                     button("Remove") {
                                                         action {
-                                                            pos.p1 = Player()
+                                                            pos.spot1.player = Player()
                                                             l.text = ""
                                                         }
                                                     }
@@ -158,7 +181,7 @@ class StandardLineupView(private val players: List<Player> = FakeData.getPlayers
                                                     addClass(LineupStyle.doublesPlayerName)
                                                     l = label {
                                                         addClass(LineupStyle.playerName)
-                                                        text = pos.p2.name
+                                                        text = pos.spot2.player.name
                                                     }
                                                     bindPlayerToColorProperty(this, Category.DOUBLES)
                                                 }
@@ -167,13 +190,18 @@ class StandardLineupView(private val players: List<Player> = FakeData.getPlayers
                                                     button("Change") {
                                                         action {
                                                             val choosePlayerFragment = ChoosePlayerFragment(obPlayers).apply { openModal(block = true) }
-                                                            pos.p2 = choosePlayerFragment.getResult() ?: pos.p2
-                                                            l.text = pos.p2.name
+                                                            if(choosePlayerFragment.getResult() != null) {
+                                                                pos.spot2.player = choosePlayerFragment.getResult()
+                                                                        ?: pos.spot2.player
+
+                                                                controller.verify()
+                                                            }
+                                                            l.text = pos.spot2.player.name
                                                         }
                                                     }
                                                     button("Remove") {
                                                         action {
-                                                            pos.p2 = Player()
+                                                            pos.spot2.player = Player()
                                                             l.text = ""
                                                         }
                                                     }
@@ -189,7 +217,7 @@ class StandardLineupView(private val players: List<Player> = FakeData.getPlayers
                                                     addClass(LineupStyle.singlesPlayerName)
                                                     l = label {
                                                         addClass(LineupStyle.playerName)
-                                                        text = pos.player.name
+                                                        text = pos.spot.player.name
                                                     }
                                                     bindPlayerToColorProperty(this, Category.SINGLES)
                                                 }
@@ -199,13 +227,18 @@ class StandardLineupView(private val players: List<Player> = FakeData.getPlayers
                                                     button("Change") {
                                                         action {
                                                             val choosePlayerFragment = ChoosePlayerFragment(obPlayers).apply { openModal(block = true) }
-                                                            pos.player = choosePlayerFragment.getResult() ?: pos.player
-                                                            l.text = pos.player.name
+                                                            if(choosePlayerFragment.getResult() != null) {
+                                                                pos.spot.player = choosePlayerFragment.getResult()
+                                                                        ?: pos.spot.player
+
+                                                                controller.verify()
+                                                            }
+                                                            l.text = pos.spot.player.name
                                                         }
                                                     }
                                                     button("Remove") {
                                                         action {
-                                                            pos.player = Player()
+                                                            pos.spot.player = Player()
                                                             l.text = ""
                                                         }
                                                     }

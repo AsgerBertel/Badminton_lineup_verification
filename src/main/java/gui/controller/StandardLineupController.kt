@@ -1,5 +1,7 @@
 package gui.controller
 
+import function.IllegalityVerdict
+import function.LineupVerification
 import gui.style.LineupStyle
 import gui.view.StandardLineupView
 import model.Category
@@ -13,33 +15,42 @@ class StandardLineupController : Controller() {
     }
 
     fun verify() {
-        highlightErrorPlayer(0)
-        highlightErrorPlayer(1)
-        highlightFulfillingPlayer(2)
-        highlightFulfillingPlayer(3)
-        highlightErrorPlayer(4)
-        highlightFulfillingPlayer(5)
+        LineupVerification.verifyLineup(view.lineup)
+        setPoints()
+        setSpotsVerdict()
     }
 
-    fun highlightErrorPlayer(playerIndex:Int) {
-        val h = view.hboxList[playerIndex]
-        h.first.styleClass.clear()
-
-        when(h.second) {
-            Category.SINGLES -> h.first.styleClass.add(LineupStyle.singlesPlayerNameIllegal.name)
-            Category.MIXED, Category.DOUBLES -> h.first.styleClass.add(LineupStyle.doublesPlayerNameIllegal.name)
-            else -> throw Exception()
-        }
+    private fun setPoints() {
+        view.pointsList.forEach { it.first.text = it.second.getPoints().toString() }
     }
 
-    fun highlightFulfillingPlayer(playerIndex:Int) {
-        val h = view.hboxList[playerIndex]
-        h.first.styleClass.clear()
+    private fun setSpotsVerdict() {
+        val positions = view.lineup.serialize()
 
-        when(h.second) {
-            Category.SINGLES -> h.first.styleClass.add(LineupStyle.singlesPlayerNameLegal.name)
-            Category.MIXED, Category.DOUBLES -> h.first.styleClass.add(LineupStyle.doublesPlayerNameLegal.name)
-            else -> throw Exception()
+        for ((i, h) in view.hboxList.withIndex()) {
+            h.first.styleClass.clear()
+
+            val style = when(h.second) {
+                Category.SINGLES -> {
+                    when(positions[i].verdict) {
+                        IllegalityVerdict.LEGAL -> LineupStyle.singlesPlayerNameLegal.name
+                        IllegalityVerdict.ILLEGAL -> LineupStyle.singlesPlayerNameIllegal.name
+                        IllegalityVerdict.WARNING -> LineupStyle.singlesPlayerName.name
+                        IllegalityVerdict.UNKNOWN -> LineupStyle.singlesPlayerName.name
+                    }
+                }
+                Category.MIXED, Category.DOUBLES -> {
+                    when(positions[i].verdict) {
+                        IllegalityVerdict.LEGAL -> LineupStyle.doublesPlayerNameLegal.name
+                        IllegalityVerdict.ILLEGAL -> LineupStyle.doublesPlayerNameIllegal.name
+                        IllegalityVerdict.WARNING -> LineupStyle.doublesPlayerName.name
+                        IllegalityVerdict.UNKNOWN -> LineupStyle.doublesPlayerName.name
+                    }
+                }
+                else -> throw Exception()
+            }
+
+            h.first.styleClass.add(style)
         }
     }
 }

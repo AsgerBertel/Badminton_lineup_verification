@@ -3,7 +3,6 @@ package model
 import tornadofx.property
 
 class Player(val name: String = "", val birthday: Int = 0, val badmintonId: Int = 0) {
-
     var sex = Sex.UNKNOWN
     var levelPoints = 0
     var singlesPoints = 0
