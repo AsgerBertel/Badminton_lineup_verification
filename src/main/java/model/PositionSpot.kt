@@ -9,7 +9,7 @@ import tornadofx.*
 
 class PositionSpot(val sexReq:Sex?) {
     val playerProperty = SimpleObjectProperty(Player())
-    var player:Player by playerProperty
+    var player: Player by playerProperty
 
     var verdict = IllegalityVerdict.UNKNOWN
 

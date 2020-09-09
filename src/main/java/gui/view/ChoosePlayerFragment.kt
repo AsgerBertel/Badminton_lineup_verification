@@ -1,9 +1,10 @@
 package gui.view
 
-import javafx.beans.property.Property
+import javafx.application.Platform
 import model.Player
 import javafx.beans.property.SimpleObjectProperty
 import javafx.collections.ObservableList
+import javafx.util.Duration
 import tornadofx.*
 
 class ChoosePlayerFragment(players: ObservableList<Player>, predicate: (Player) -> Boolean) : Fragment() {
@@ -29,9 +30,12 @@ class ChoosePlayerFragment(players: ObservableList<Player>, predicate: (Player) 
             readonlyColumn("Point", Player::doublesPoints)
             readonlyColumn("Point", Player::mixedPoints)
             bindSelected(selectedPlayerProperty)
-            this.onDoubleClick {
+            this.onSelectionChange {
                 resultPlayer = selectedPlayer
-                close()
+
+                runLater (Duration.millis(100.0)) {
+                    close()
+                }
             }
 
 

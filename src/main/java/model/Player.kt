@@ -22,4 +22,11 @@ class Player(val name: String = "", val birthday: Int = 0, val badmintonId: Int 
             Category.MIXED -> mixedPoints
         }
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (other is Player)
+            return other.badmintonId == badmintonId && other.name == name
+        else
+            return super.equals(other)
+    }
 }
