@@ -27,7 +27,7 @@ class DoublesPosition(specifier:String, override val sexReq: Sex?) : Position(sp
     override fun getPoints() = spot1.player.getPoints(category) + spot2.player.getPoints(category)
 }
 
-class MixedPosition(specifier:String) : Position(specifier) {
+open class MixedPosition(specifier:String) : Position(specifier) {
     override val sexReq: Sex? = null
     private val category = Category.MIXED
 
@@ -36,5 +36,4 @@ class MixedPosition(specifier:String) : Position(specifier) {
 
     override fun getPoints() = spot1.player.getPoints(category) + spot2.player.getPoints(category)
 }
-
 
