@@ -1,8 +1,10 @@
 package gui.view
 
+import com.sun.javafx.scene.control.skin.Utils.getResource
 import gui.controller.StandardLineupController
 import gui.style.LineupStyle
 import io.JsonFileHandler
+import javafx.beans.property.SimpleIntegerProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.collections.ObservableList
 import javafx.geometry.Orientation
@@ -12,13 +14,12 @@ import model.*
 import tornadofx.*
 
 
-class StandardLineupView(players: List<Player>? = null, val lineup: StandardLineupStructure = FakeData.getLineup()) : View() {
+class StandardLineupView(val players: List<Player> = JsonFileHandler().loadPlayerFile("src/main/resources/PlayerList.json"), val lineup: StandardLineupStructure = FakeData.getLineup()) : View() {
     override val root = vbox {
         primaryStage.minWidth = 500.0
         primaryStage.minHeight = 940.0
         primaryStage.isResizable = false
     }
-    val players: List<Player> = players ?: JsonFileHandler().loadPlayerFile(resources["PlayerList.json"])
 
     val controller:StandardLineupController by inject()
     val obPlayers = playersToObservable()
@@ -90,7 +91,7 @@ class StandardLineupView(players: List<Player>? = null, val lineup: StandardLine
                                                     addClass(LineupStyle.buttonsBox)
                                                     button("Change") {
                                                         action {
-                                                            val choosePlayerFragment = ChoosePlayerFragment(obPlayers).apply { openModal(block = true) }
+                                                            val choosePlayerFragment = ChoosePlayerFragment(obPlayers) { pos.spot1.sexReq == null || it.sex.knownEqual(pos.spot1.sexReq!!)  }.apply { openModal(block = true) }
                                                             if(choosePlayerFragment.getResult() != null) {
                                                                 pos.spot1.player = choosePlayerFragment.getResult()
                                                                         ?: pos.spot1.player
@@ -122,7 +123,7 @@ class StandardLineupView(players: List<Player>? = null, val lineup: StandardLine
                                                     addClass(LineupStyle.buttonsBox)
                                                     button("Change") {
                                                         action {
-                                                            val choosePlayerFragment = ChoosePlayerFragment(obPlayers).apply { openModal(block = true) }
+                                                            val choosePlayerFragment = ChoosePlayerFragment(obPlayers) { pos.spot2.sexReq == null || it.sex.knownEqual(pos.spot2.sexReq!!) }.apply { openModal(block = true) }
                                                             if(choosePlayerFragment.getResult() != null) {
                                                                 pos.spot2.player = choosePlayerFragment.getResult()
                                                                         ?: pos.spot2.player
@@ -159,7 +160,7 @@ class StandardLineupView(players: List<Player>? = null, val lineup: StandardLine
                                                     addClass(LineupStyle.buttonsBox)
                                                     button("Change") {
                                                         action {
-                                                            val choosePlayerFragment = ChoosePlayerFragment(obPlayers).apply { openModal(block = true) }
+                                                            val choosePlayerFragment = ChoosePlayerFragment(obPlayers) {pos.spot1.sexReq == null || it.sex.knownEqual(pos.spot1.sexReq!!)}.apply { openModal(block = true) }
                                                             if(choosePlayerFragment.getResult() != null) {
                                                                 pos.spot1.player = choosePlayerFragment.getResult()
                                                                         ?: pos.spot1.player
@@ -191,7 +192,7 @@ class StandardLineupView(players: List<Player>? = null, val lineup: StandardLine
                                                     addClass(LineupStyle.buttonsBox)
                                                     button("Change") {
                                                         action {
-                                                            val choosePlayerFragment = ChoosePlayerFragment(obPlayers).apply { openModal(block = true) }
+                                                            val choosePlayerFragment = ChoosePlayerFragment(obPlayers) {pos.spot2.sexReq == null || it.sex == pos.spot2.sexReq}.apply { openModal(block = true) }
                                                             if(choosePlayerFragment.getResult() != null) {
                                                                 pos.spot2.player = choosePlayerFragment.getResult()
                                                                         ?: pos.spot2.player
@@ -228,7 +229,7 @@ class StandardLineupView(players: List<Player>? = null, val lineup: StandardLine
                                                     addClass(LineupStyle.buttonsBox)
                                                     button("Change") {
                                                         action {
-                                                            val choosePlayerFragment = ChoosePlayerFragment(obPlayers).apply { openModal(block = true) }
+                                                            val choosePlayerFragment = ChoosePlayerFragment(obPlayers) {pos.spot.sexReq == null || it.sex.knownEqual(pos.spot.sexReq!!)}.apply { openModal(block = true) }
                                                             if(choosePlayerFragment.getResult() != null) {
                                                                 pos.spot.player = choosePlayerFragment.getResult()
                                                                         ?: pos.spot.player
@@ -264,7 +265,7 @@ class StandardLineupView(players: List<Player>? = null, val lineup: StandardLine
     private fun playersToObservable(): ObservableList<Player> {
         val res = observableList<Player>()
 
-        res.addAll(players!!)
+        res.addAll(players)
 
         return res
     }

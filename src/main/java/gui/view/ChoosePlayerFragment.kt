@@ -6,7 +6,7 @@ import javafx.beans.property.SimpleObjectProperty
 import javafx.collections.ObservableList
 import tornadofx.*
 
-class ChoosePlayerFragment(players: ObservableList<Player>) : Fragment() {
+class ChoosePlayerFragment(players: ObservableList<Player>, predicate: (Player) -> Boolean) : Fragment() {
     override val root = vbox()
 
     private val selectedPlayerProperty = SimpleObjectProperty<Player>()
@@ -14,8 +14,10 @@ class ChoosePlayerFragment(players: ObservableList<Player>) : Fragment() {
     private var resultPlayer:Player? = null
 
     init {
+        // Filter the players
+        val filteredPlayers = players.filtered { predicate(it) }
 
-        tableview(players) {
+        tableview(filteredPlayers) {
             root.setPrefSize(500.0, 500.0)
             columnResizePolicy = SmartResize.POLICY
             prefHeightProperty().bind(root.heightProperty())
