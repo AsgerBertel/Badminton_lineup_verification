@@ -14,16 +14,20 @@ import tornadofx.*
 
 
 class StandardLineupView(val players: List<Player> = JsonFileHandler().loadPlayerFile("src/main/resources/PlayerList.json"), val lineup: StandardLineupStructure = FakeData.getLineup()) : View() {
-    override val root = vbox {
-        primaryStage.minWidth = 500.0
-        primaryStage.minHeight = 940.0
-        primaryStage.isResizable = false
-    }
+    override val root = vbox()
 
     val controller:StandardLineupController by inject()
     val obPlayers = playersToObservable()
     val hboxList = mutableListOf<Pair<HBox, Category>>()
     val pointsList = mutableListOf<Pair<Label, Position>>()
+
+    override fun onDock() {
+        primaryStage.minWidth = 0.0
+        primaryStage.minHeight = 0.0
+        primaryStage.sizeToScene()
+        primaryStage.minHeight = primaryStage.height
+        primaryStage.minWidth = primaryStage.width
+    }
 
     override fun onBeforeShow() {
         controller.verify()
