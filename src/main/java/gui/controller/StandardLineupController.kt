@@ -1,6 +1,6 @@
 package gui.controller
 
-import function.IllegalityVerdict
+import function.Verdict
 import function.LineupVerification
 import gui.style.LineupStyle
 import gui.view.StandardLineupView
@@ -28,18 +28,18 @@ class StandardLineupController : Controller() {
             val style = when(h.second) {
                 Category.SINGLES -> {
                     when(positions[i].verdict) {
-                        IllegalityVerdict.LEGAL -> LineupStyle.singlesPlayerNameLegal.name
-                        IllegalityVerdict.ILLEGAL -> LineupStyle.singlesPlayerNameIllegal.name
-                        IllegalityVerdict.WARNING -> LineupStyle.singlesPlayerName.name
-                        IllegalityVerdict.UNKNOWN -> LineupStyle.singlesPlayerName.name
+                        Verdict.LEGAL -> LineupStyle.singlesPlayerNameLegal.name
+                        Verdict.ILLEGAL -> LineupStyle.singlesPlayerNameIllegal.name
+                        Verdict.WARNING -> LineupStyle.singlesPlayerName.name
+                        Verdict.UNKNOWN -> LineupStyle.singlesPlayerName.name
                     }
                 }
                 Category.MIXED, Category.DOUBLES -> {
                     when(positions[i].verdict) {
-                        IllegalityVerdict.LEGAL -> LineupStyle.doublesPlayerNameLegal.name
-                        IllegalityVerdict.ILLEGAL -> LineupStyle.doublesPlayerNameIllegal.name
-                        IllegalityVerdict.WARNING -> LineupStyle.doublesPlayerName.name
-                        IllegalityVerdict.UNKNOWN -> LineupStyle.doublesPlayerName.name
+                        Verdict.LEGAL -> LineupStyle.doublesPlayerNameLegal.name
+                        Verdict.ILLEGAL -> LineupStyle.doublesPlayerNameIllegal.name
+                        Verdict.WARNING -> LineupStyle.doublesPlayerName.name
+                        Verdict.UNKNOWN -> LineupStyle.doublesPlayerName.name
                     }
                 }
                 else -> throw Exception()

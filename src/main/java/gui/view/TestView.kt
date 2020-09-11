@@ -7,7 +7,9 @@ import javafx.beans.Observable
 import javafx.beans.binding.ObjectBinding
 import javafx.beans.property.SimpleObjectProperty
 import javafx.beans.value.ObservableObjectValue
+import javafx.event.EventHandler
 import javafx.scene.Scene
+import javafx.scene.input.MouseEvent
 import javafx.stage.Stage
 import javafx.util.StringConverter
 import model.Player
@@ -26,6 +28,14 @@ class TestView : View() {
 
     init {
         with(root) {
+            hbox {
+                val l = label("Ready") {  }
+
+                this.onMouseClicked = EventHandler {
+                    l.text = "GO"
+                }
+            }
+
             label("Navn skal stå her hvis man er nice :)")
             val l = label("Navn") {
                 bind(playerProperty, converter = MyConverter())

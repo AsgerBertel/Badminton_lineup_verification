@@ -1,12 +1,13 @@
 package gui.view
 
-import function.IllegalityVerdict
+import com.sun.javafx.binding.BidirectionalBinding.bind
 import gui.PlayerStringConverter
-import gui.IntConverter
+import gui.PlayerPointsConverter
 import gui.controller.StandardLineupController
 import gui.style.LineupStyle
 import io.JsonFileHandler
 import javafx.collections.ObservableList
+import javafx.event.EventHandler
 import javafx.geometry.Orientation
 import javafx.scene.control.Label
 import javafx.scene.layout.HBox
@@ -85,28 +86,21 @@ class StandardLineupView(val players: List<Player> = JsonFileHandler().loadPlaye
                                     is MixedPosition -> {
                                         center = vbox(LineupStyle.betweenPlayersSize) {
                                             borderpane {
-                                                var l = label()
                                                 center = hbox {
                                                     addClass(LineupStyle.doublesPlayerName)
-                                                    l = label {
+                                                    label {
                                                         addClass(LineupStyle.playerName)
                                                         bind(pos.spot1.playerProperty, converter = PlayerStringConverter())
                                                     }
                                                     bindPlayerToColorProperty(this, Category.MIXED)
+                                                    onMouseClicked = EventHandler { changePlayer(pos.spot1) }
+                                                    tooltip {
+                                                        bind(textProperty(), pos.spot1.playerProperty, PlayerPointsConverter(Category.MIXED))
+                                                    }
                                                 }
 
                                                 right = hbox(5) {
                                                     addClass(LineupStyle.buttonsBox)
-                                                    button("Change") {
-                                                        action {
-                                                            val choosePlayerFragment = ChoosePlayerFragment(obPlayers) { pos.spot1.sexReq == null || it.sex.knownEqual(pos.spot1.sexReq!!)  }.apply { openModal(block = true) }
-                                                            if(choosePlayerFragment.getResult() != null) {
-                                                                pos.spot1.player = choosePlayerFragment.getResult()
-                                                                        ?: pos.spot1.player
-                                                                controller.verify()
-                                                            }
-                                                        }
-                                                    }
                                                     button("Remove") {
                                                         action {
                                                             resetSpot(pos.spot1)
@@ -115,28 +109,21 @@ class StandardLineupView(val players: List<Player> = JsonFileHandler().loadPlaye
                                                 }
                                             }
                                             borderpane {
-                                                var l = label()
                                                 center = hbox {
                                                     addClass(LineupStyle.doublesPlayerName)
-                                                    l = label {
+                                                    label {
                                                         addClass(LineupStyle.playerName)
                                                         bind(pos.spot2.playerProperty, converter = PlayerStringConverter())
                                                     }
                                                     bindPlayerToColorProperty(this, Category.MIXED)
+                                                    onMouseClicked = EventHandler { changePlayer(pos.spot2) }
+                                                    tooltip {
+                                                        bind(textProperty(), pos.spot2.playerProperty, PlayerPointsConverter(Category.MIXED))
+                                                    }                                               
                                                 }
+
                                                 right = hbox(5) {
                                                     addClass(LineupStyle.buttonsBox)
-                                                    button("Change") {
-                                                        action {
-                                                            val choosePlayerFragment = ChoosePlayerFragment(obPlayers) { pos.spot2.sexReq == null || it.sex.knownEqual(pos.spot2.sexReq!!) }.apply { openModal(block = true) }
-                                                            if(choosePlayerFragment.getResult() != null) {
-                                                                pos.spot2.player = choosePlayerFragment.getResult()
-                                                                        ?: pos.spot2.player
-
-                                                                controller.verify()
-                                                            }
-                                                        }
-                                                    }
                                                     button("Remove") {
                                                         action {
                                                             resetSpot(pos.spot2)
@@ -149,29 +136,21 @@ class StandardLineupView(val players: List<Player> = JsonFileHandler().loadPlaye
                                     is DoublesPosition -> {
                                         center = vbox(LineupStyle.betweenPlayersSize) {
                                             borderpane {
-                                                var l = label()
                                                 center = hbox {
                                                     addClass(LineupStyle.doublesPlayerName)
-                                                    l = label {
+                                                    label {
                                                         addClass(LineupStyle.playerName)
                                                         bind(pos.spot1.playerProperty, converter = PlayerStringConverter())
                                                     }
                                                     bindPlayerToColorProperty(this, Category.DOUBLES)
+                                                    onMouseClicked = EventHandler { changePlayer(pos.spot1) }
+                                                    tooltip {
+                                                        bind(textProperty(), pos.spot1.playerProperty, PlayerPointsConverter(Category.DOUBLES))
+                                                    }
                                                 }
 
                                                 right = hbox(5) {
                                                     addClass(LineupStyle.buttonsBox)
-                                                    button("Change") {
-                                                        action {
-                                                            val choosePlayerFragment = ChoosePlayerFragment(obPlayers) {pos.spot1.sexReq == null || it.sex.knownEqual(pos.spot1.sexReq!!)}.apply { openModal(block = true) }
-                                                            if(choosePlayerFragment.getResult() != null) {
-                                                                pos.spot1.player = choosePlayerFragment.getResult()
-                                                                        ?: pos.spot1.player
-
-                                                                controller.verify()
-                                                            }
-                                                        }
-                                                    }
                                                     button("Remove") {
                                                         action {
                                                             resetSpot(pos.spot1)
@@ -180,31 +159,23 @@ class StandardLineupView(val players: List<Player> = JsonFileHandler().loadPlaye
                                                 }
                                             }
                                             borderpane {
-                                                var l = label()
                                                 center = hbox {
                                                     addClass(LineupStyle.doublesPlayerName)
-                                                    l = label {
+                                                    label {
                                                         addClass(LineupStyle.playerName)
                                                         bind(pos.spot2.playerProperty, converter = PlayerStringConverter())
                                                     }
                                                     bindPlayerToColorProperty(this, Category.DOUBLES)
+                                                    onMouseClicked = EventHandler { changePlayer(pos.spot2) }
+                                                    tooltip {
+                                                        bind(textProperty(), pos.spot2.playerProperty, PlayerPointsConverter(Category.DOUBLES))
+                                                    }
                                                 }
                                                 right = hbox(5) {
                                                     addClass(LineupStyle.buttonsBox)
-                                                    button("Change") {
-                                                        action {
-                                                            val choosePlayerFragment = ChoosePlayerFragment(obPlayers) {pos.spot2.sexReq == null || it.sex == pos.spot2.sexReq}.apply { openModal(block = true) }
-                                                            if(choosePlayerFragment.getResult() != null) {
-                                                                pos.spot2.player = choosePlayerFragment.getResult()
-                                                                        ?: pos.spot2.player
-
-                                                                controller.verify()
-                                                            }
-                                                        }
-                                                    }
                                                     button("Remove") {
                                                         action {
-                                                            resetSpot(pos.spot2)
+                                                            pos.spot2.player = Player()
                                                         }
                                                     }
                                                 }
@@ -214,29 +185,21 @@ class StandardLineupView(val players: List<Player> = JsonFileHandler().loadPlaye
                                     is SinglesPosition -> {
                                         center = vbox(LineupStyle.betweenPlayersSize) {
                                             borderpane {
-                                                var l = label()
                                                 center = hbox {
                                                     addClass(LineupStyle.singlesPlayerName)
-                                                    l = label {
+                                                    label {
                                                         addClass(LineupStyle.playerName)
                                                         bind(pos.spot.playerProperty, converter = PlayerStringConverter())
                                                     }
                                                     bindPlayerToColorProperty(this, Category.SINGLES)
+                                                    onMouseClicked = EventHandler { changePlayer(pos.spot) }
+                                                    tooltip {
+                                                        bind(textProperty(), pos.spot.playerProperty, PlayerPointsConverter(Category.SINGLES))
+                                                    }
                                                 }
 
                                                 right = hbox(5) {
                                                     addClass(LineupStyle.buttonsBox)
-                                                    button("Change") {
-                                                        action {
-                                                            val choosePlayerFragment = ChoosePlayerFragment(obPlayers) {pos.spot.sexReq == null || it.sex.knownEqual(pos.spot.sexReq!!)}.apply { openModal(block = true) }
-                                                            if(choosePlayerFragment.getResult() != null) {
-                                                                pos.spot.player = choosePlayerFragment.getResult()
-                                                                        ?: pos.spot.player
-
-                                                                controller.verify()
-                                                            }
-                                                        }
-                                                    }
                                                     button("Remove") {
                                                         action {
                                                             resetSpot(pos.spot)
@@ -258,6 +221,17 @@ class StandardLineupView(val players: List<Player> = JsonFileHandler().loadPlaye
     private fun resetSpot(spot: PositionSpot) {
         spot.player = Player()
         controller.verify()
+    }
+
+    private fun changePlayer(spot:PositionSpot) {
+        val choosePlayerFragment = ChoosePlayerFragment(obPlayers) { spot.sexReq == null || it.sex.knownEqual(spot.sexReq!!)  }.apply { openModal(block = true) }
+
+        if(choosePlayerFragment.getResult() != null) {
+            spot.player = choosePlayerFragment.getResult()
+                    ?: spot.player
+
+            controller.verify()
+        }
     }
 
     private fun bindPlayerToColorProperty(h: HBox, cat:Category) {
