@@ -14,10 +14,12 @@ class LineupStyle : Stylesheet() {
         val singlesPlayerName by cssclass()
         val singlesPlayerNameIllegal by cssclass()
         val singlesPlayerNameLegal by cssclass()
+        val singlesPlayerNameEmpty by cssclass()
         val doublesBox by cssclass()
         val doublesPlayerName by cssclass()
         val doublesPlayerNameIllegal by cssclass()
         val doublesPlayerNameLegal by cssclass()
+        val doublesPlayerNameEmpty by cssclass()
         val specifierBox by cssclass()
         val pointsBox by cssclass()
         val playerName by cssclass()
@@ -38,7 +40,7 @@ class LineupStyle : Stylesheet() {
         private const val standardGrey = 230
         val standardBackgroundColor = c(standardGrey, standardGrey, standardGrey)
         val playerNameBackgroundColor = c(standardGrey+15, standardGrey+15, standardGrey+15)
-        val standardBackgroundBorderColor = c(standardGrey-20, standardGrey-20, standardGrey-20)
+        val playerNameEmptyBackgroundColor = c(standardGrey-20, standardGrey-20, standardGrey-20)
 
         val legalPlayerColor = c(220,255,220)
         val illegalPlayerColor = c(255,220,220)
@@ -109,6 +111,16 @@ class LineupStyle : Stylesheet() {
             alignment = Pos.CENTER_LEFT
         }
 
+        doublesPlayerNameEmpty {
+            padding = box(standardPadding)
+            backgroundRadius += box(standardRadius)
+            backgroundColor += playerNameEmptyBackgroundColor
+            fontSize = nameFontSize
+            minHeight = doublesBoxHeight / 2
+            minWidth = playerLabelWidth
+            alignment = Pos.CENTER_LEFT
+        }
+
         singlesPlayerName {
             backgroundRadius += box(standardRadius)
             padding = box(standardPadding)
@@ -133,6 +145,16 @@ class LineupStyle : Stylesheet() {
             backgroundRadius += box(standardRadius)
             padding = box(standardPadding)
             backgroundColor += legalPlayerColor
+            fontSize = nameFontSize
+            minHeight = singlesBoxHeight
+            minWidth = playerLabelWidth
+            alignment = Pos.CENTER_LEFT
+        }
+
+        singlesPlayerNameEmpty {
+            backgroundRadius += box(standardRadius)
+            padding = box(standardPadding)
+            backgroundColor += playerNameEmptyBackgroundColor
             fontSize = nameFontSize
             minHeight = singlesBoxHeight
             minWidth = playerLabelWidth

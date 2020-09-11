@@ -30,6 +30,7 @@ class StandardLineupController : Controller() {
                     when(positions[i].verdict) {
                         Verdict.LEGAL -> LineupStyle.singlesPlayerNameLegal.name
                         Verdict.ILLEGAL -> LineupStyle.singlesPlayerNameIllegal.name
+                        Verdict.EMPTY -> LineupStyle.singlesPlayerNameEmpty.name
                         Verdict.WARNING -> LineupStyle.singlesPlayerName.name
                         Verdict.UNKNOWN -> LineupStyle.singlesPlayerName.name
                     }
@@ -38,6 +39,7 @@ class StandardLineupController : Controller() {
                     when(positions[i].verdict) {
                         Verdict.LEGAL -> LineupStyle.doublesPlayerNameLegal.name
                         Verdict.ILLEGAL -> LineupStyle.doublesPlayerNameIllegal.name
+                        Verdict.EMPTY -> LineupStyle.doublesPlayerNameEmpty.name
                         Verdict.WARNING -> LineupStyle.doublesPlayerName.name
                         Verdict.UNKNOWN -> LineupStyle.doublesPlayerName.name
                     }
