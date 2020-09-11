@@ -26,8 +26,34 @@ class TestView : View() {
     val playerProperty = SimpleObjectProperty(Player("Hans"))
     val player by playerProperty
 
+    override fun onDock() {
+        super.onDock()
+        println("TestView Dock")
+    }
+
+    override fun onBeforeShow() {
+        super.onBeforeShow()
+        println("TestView Beforeshow")
+    }
+
+    override fun onRefresh() {
+        super.onRefresh()
+        println("TestView refresh")
+    }
+
+    override fun onUndock() {
+        super.onUndock()
+        println("TestView undock")
+    }
+
     init {
         with(root) {
+            button("Change view") {
+                action {
+                    replaceWith(StandardLineupView::class)
+                }
+            }
+
             hbox {
                 val l = label("Ready") {  }
 

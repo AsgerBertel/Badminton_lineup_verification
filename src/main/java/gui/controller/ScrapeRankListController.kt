@@ -16,7 +16,7 @@ class ScrapeRankListController: Controller() {
 
     fun scrape() {
         val scrapedPlayers = scraper.scrapeRankList()
-        var players = listOf<Player>()
+        val players: List<Player>
 
         if(scrapedPlayers.isEmpty()) {
             players = loadPlayersFromJSON()
@@ -26,7 +26,7 @@ class ScrapeRankListController: Controller() {
             players = scrapedPlayers
 
         Platform.runLater {
-            view.replaceWith(StandardLineupView(players))
+            view.replaceWith(StandardLineupView(players)::class)
         }
     }
 

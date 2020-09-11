@@ -4,19 +4,48 @@ import javafx.beans.property.SimpleObjectProperty
 import javafx.collections.ObservableList
 import javafx.collections.transformation.FilteredList
 import javafx.collections.transformation.SortedList
+import javafx.scene.control.TableColumn
 import javafx.scene.control.TableRow
+import javafx.scene.control.TableView
 import javafx.util.Duration
+import model.Category
 import model.Player
 import tornadofx.*
-import javax.swing.text.TableView
 
 
-class ChoosePlayerFragment(players: ObservableList<Player>, predicate: (Player) -> Boolean) : Fragment() {
+class ChoosePlayerFragment(players: ObservableList<Player>, val cat: Category? = null, predicate: (Player) -> Boolean) : Fragment() {
     override val root = vbox()
 
     private val selectedPlayerProperty = SimpleObjectProperty<Player>()
     private val selectedPlayer: Player by selectedPlayerProperty
     private var resultPlayer:Player? = null
+
+    private var table: TableView<Player>? = null
+    private var nameColumn: TableColumn<Player, String>? = null
+    private var levelColumn: TableColumn<Player, Int>? = null
+    private var singlesColumn: TableColumn<Player, Int>? = null
+    private var doublesColumn: TableColumn<Player, Int>? = null
+    private var mixedColumn: TableColumn<Player, Int>? = null
+
+    override fun onDock() {
+        super.onDock()
+
+        title = "Choose a player"
+
+        nameColumn!!.remainingWidth()
+
+        levelColumn!!.sortType = TableColumn.SortType.DESCENDING
+        singlesColumn!!.sortType = TableColumn.SortType.DESCENDING
+        doublesColumn!!.sortType = TableColumn.SortType.DESCENDING
+        mixedColumn!!.sortType = TableColumn.SortType.DESCENDING
+        when(cat) {
+            Category.LEVEL -> table!!.sortOrder.add(levelColumn)
+            Category.SINGLES -> table!!.sortOrder.addAll(singlesColumn, levelColumn)
+            Category.DOUBLES -> table!!.sortOrder.addAll(doublesColumn, levelColumn)
+            Category.MIXED -> table!!.sortOrder.addAll(mixedColumn, levelColumn)
+        }
+    }
+
 
     init {
         val filteredPlayers = FilteredList(players)
@@ -48,17 +77,19 @@ class ChoosePlayerFragment(players: ObservableList<Player>, predicate: (Player) 
         }
         val sortableData: SortedList<Player> = SortedList<Player>(filteredPlayers)
 
-        tableview(sortableData) {
+        table = tableview(sortableData) {
             sortableData.comparatorProperty().bind(comparatorProperty())
             root.setPrefSize(623.5, 500.0)
             prefHeightProperty().bind(root.heightProperty())
             prefWidthProperty().bind(root.widthProperty())
-            readonlyColumn("Name", Player::name)
+
+            nameColumn = readonlyColumn("Name", Player::name)
             readonlyColumn("ID", Player::badmintonId)
-            readonlyColumn("Level Points", Player::levelPoints)
-            readonlyColumn("Single Points", Player::singlesPoints)
-            readonlyColumn("Double Points", Player::doublesPoints)
-            readonlyColumn("Mixed Points", Player::mixedPoints)
+            levelColumn = readonlyColumn("Level Points", Player::levelPoints)
+            singlesColumn = readonlyColumn("Single Points", Player::singlesPoints)
+            doublesColumn = readonlyColumn("Double Points", Player::doublesPoints)
+            mixedColumn = readonlyColumn("Mixed Points", Player::mixedPoints)
+
             bindSelected(selectedPlayerProperty)
 
             setRowFactory {

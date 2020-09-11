@@ -16,6 +16,12 @@ class ScrapeRankListView: View() {
     private val bar = SimpleDoubleProperty()
     private val status = SimpleStringProperty()
 
+    override fun onDock() {
+        super.onDock()
+
+        title = "Scraping BadmintonPlayer"
+    }
+
     init {
         with(root) {
             vbox {

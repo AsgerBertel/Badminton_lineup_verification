@@ -51,6 +51,7 @@ class LineupStyle : Stylesheet() {
     init {
         standardLineupBox {
             backgroundColor += standardBackgroundColor
+            maxWidth = 600.px
         }
 
         singlesBox {

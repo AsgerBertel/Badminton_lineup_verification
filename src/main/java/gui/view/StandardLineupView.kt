@@ -1,6 +1,7 @@
 package gui.view
 
 import com.sun.javafx.binding.BidirectionalBinding.bind
+import gui.MyApp
 import gui.PlayerStringConverter
 import gui.PlayerPointsConverter
 import gui.controller.StandardLineupController
@@ -24,14 +25,14 @@ class StandardLineupView(val players: List<Player> = JsonFileHandler().loadPlaye
     val pointsList = mutableListOf<Pair<Label, Position>>()
 
     override fun onDock() {
-        primaryStage.minWidth = 0.0
-        primaryStage.minHeight = 0.0
+        super.onDock()
+
+        title = "Standard Lineup"
+
         primaryStage.sizeToScene()
         primaryStage.minHeight = primaryStage.height
         primaryStage.minWidth = primaryStage.width
-    }
 
-    override fun onBeforeShow() {
         controller.verify()
     }
 
@@ -93,7 +94,7 @@ class StandardLineupView(val players: List<Player> = JsonFileHandler().loadPlaye
                                                         bind(pos.spot1.playerProperty, converter = PlayerStringConverter())
                                                     }
                                                     bindPlayerToColorProperty(this, Category.MIXED)
-                                                    onMouseClicked = EventHandler { changePlayer(pos.spot1) }
+                                                    onMouseClicked = EventHandler { changePlayer(pos.spot1, Category.MIXED) }
                                                     tooltip {
                                                         bind(textProperty(), pos.spot1.playerProperty, PlayerPointsConverter(Category.MIXED))
                                                     }
@@ -116,7 +117,7 @@ class StandardLineupView(val players: List<Player> = JsonFileHandler().loadPlaye
                                                         bind(pos.spot2.playerProperty, converter = PlayerStringConverter())
                                                     }
                                                     bindPlayerToColorProperty(this, Category.MIXED)
-                                                    onMouseClicked = EventHandler { changePlayer(pos.spot2) }
+                                                    onMouseClicked = EventHandler { changePlayer(pos.spot2, Category.MIXED) }
                                                     tooltip {
                                                         bind(textProperty(), pos.spot2.playerProperty, PlayerPointsConverter(Category.MIXED))
                                                     }                                               
@@ -143,7 +144,7 @@ class StandardLineupView(val players: List<Player> = JsonFileHandler().loadPlaye
                                                         bind(pos.spot1.playerProperty, converter = PlayerStringConverter())
                                                     }
                                                     bindPlayerToColorProperty(this, Category.DOUBLES)
-                                                    onMouseClicked = EventHandler { changePlayer(pos.spot1) }
+                                                    onMouseClicked = EventHandler { changePlayer(pos.spot1, Category.DOUBLES) }
                                                     tooltip {
                                                         bind(textProperty(), pos.spot1.playerProperty, PlayerPointsConverter(Category.DOUBLES))
                                                     }
@@ -166,7 +167,7 @@ class StandardLineupView(val players: List<Player> = JsonFileHandler().loadPlaye
                                                         bind(pos.spot2.playerProperty, converter = PlayerStringConverter())
                                                     }
                                                     bindPlayerToColorProperty(this, Category.DOUBLES)
-                                                    onMouseClicked = EventHandler { changePlayer(pos.spot2) }
+                                                    onMouseClicked = EventHandler { changePlayer(pos.spot2, Category.DOUBLES) }
                                                     tooltip {
                                                         bind(textProperty(), pos.spot2.playerProperty, PlayerPointsConverter(Category.DOUBLES))
                                                     }
@@ -192,7 +193,7 @@ class StandardLineupView(val players: List<Player> = JsonFileHandler().loadPlaye
                                                         bind(pos.spot.playerProperty, converter = PlayerStringConverter())
                                                     }
                                                     bindPlayerToColorProperty(this, Category.SINGLES)
-                                                    onMouseClicked = EventHandler { changePlayer(pos.spot) }
+                                                    onMouseClicked = EventHandler { changePlayer(pos.spot, Category.SINGLES) }
                                                     tooltip {
                                                         bind(textProperty(), pos.spot.playerProperty, PlayerPointsConverter(Category.SINGLES))
                                                     }
@@ -223,8 +224,8 @@ class StandardLineupView(val players: List<Player> = JsonFileHandler().loadPlaye
         controller.verify()
     }
 
-    private fun changePlayer(spot:PositionSpot) {
-        val choosePlayerFragment = ChoosePlayerFragment(obPlayers) { spot.sexReq == null || it.sex.knownEqual(spot.sexReq!!)  }.apply { openModal(block = true) }
+    private fun changePlayer(spot:PositionSpot, sortAfter:Category? = null) {
+        val choosePlayerFragment = ChoosePlayerFragment(obPlayers, sortAfter) { spot.sexReq == null || it.sex.knownEqual(spot.sexReq)  }.apply { openModal(block = true) }
 
         if(choosePlayerFragment.getResult() != null) {
             spot.player = choosePlayerFragment.getResult()
