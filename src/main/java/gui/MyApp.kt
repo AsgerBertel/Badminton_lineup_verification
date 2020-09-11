@@ -11,14 +11,7 @@ import model.StandardLineupStructure
 import tornadofx.*
 
 class MyApp: App(ScrapeRankListView::class, LineupStyle::class) {
-    override fun start(stage: Stage) {
-        super.start(stage)
-
-    }
-
-
     init {
-
         reloadStylesheetsOnFocus()
     }
 }
