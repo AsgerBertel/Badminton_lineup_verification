@@ -103,7 +103,7 @@ class StandardLineupView(val players: List<Player> = JsonFileHandler().loadPlaye
                                                     addClass(LineupStyle.buttonsBox)
                                                     button("Remove") {
                                                         action {
-                                                            pos.spot1.player = Player()
+                                                            resetSpot(pos.spot1)
                                                         }
                                                     }
                                                 }
@@ -126,7 +126,7 @@ class StandardLineupView(val players: List<Player> = JsonFileHandler().loadPlaye
                                                     addClass(LineupStyle.buttonsBox)
                                                     button("Remove") {
                                                         action {
-                                                            pos.spot2.player = Player()
+                                                            resetSpot(pos.spot2)
                                                         }
                                                     }
                                                 }
@@ -153,7 +153,7 @@ class StandardLineupView(val players: List<Player> = JsonFileHandler().loadPlaye
                                                     addClass(LineupStyle.buttonsBox)
                                                     button("Remove") {
                                                         action {
-                                                            pos.spot1.player = Player()
+                                                            resetSpot(pos.spot1)
                                                         }
                                                     }
                                                 }
@@ -202,7 +202,7 @@ class StandardLineupView(val players: List<Player> = JsonFileHandler().loadPlaye
                                                     addClass(LineupStyle.buttonsBox)
                                                     button("Remove") {
                                                         action {
-                                                            pos.spot.player = Player()
+                                                            resetSpot(pos.spot)
                                                         }
                                                     }
                                                 }
@@ -216,6 +216,11 @@ class StandardLineupView(val players: List<Player> = JsonFileHandler().loadPlaye
                 }
             }
         }
+    }
+
+    private fun resetSpot(spot: PositionSpot) {
+        spot.player = Player()
+        controller.verify()
     }
 
     private fun changePlayer(spot:PositionSpot) {
