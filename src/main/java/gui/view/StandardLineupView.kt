@@ -1,7 +1,8 @@
 package gui.view
 
+import com.sun.javafx.binding.BidirectionalBinding.bind
 import gui.PlayerStringConverter
-import gui.IntConverter
+import gui.PlayerPointsConverter
 import gui.controller.StandardLineupController
 import gui.style.LineupStyle
 import io.JsonFileHandler
@@ -92,6 +93,9 @@ class StandardLineupView(val players: List<Player> = JsonFileHandler().loadPlaye
                                                         bind(pos.spot1.playerProperty, converter = PlayerStringConverter())
                                                     }
                                                     bindPlayerToColorProperty(this, Category.MIXED)
+                                                    tooltip {
+                                                        bind(textProperty(), pos.spot1.playerProperty, PlayerPointsConverter(Category.MIXED))
+                                                    }
                                                 }
 
                                                 right = hbox(5) {
@@ -122,7 +126,9 @@ class StandardLineupView(val players: List<Player> = JsonFileHandler().loadPlaye
                                                         bind(pos.spot2.playerProperty, converter = PlayerStringConverter())
                                                     }
                                                     bindPlayerToColorProperty(this, Category.MIXED)
-                                                }
+                                                    tooltip {
+                                                        bind(textProperty(), pos.spot2.playerProperty, PlayerPointsConverter(Category.MIXED))
+                                                    }                                                }
                                                 right = hbox(5) {
                                                     addClass(LineupStyle.buttonsBox)
                                                     button("Change") {
@@ -156,6 +162,9 @@ class StandardLineupView(val players: List<Player> = JsonFileHandler().loadPlaye
                                                         bind(pos.spot1.playerProperty, converter = PlayerStringConverter())
                                                     }
                                                     bindPlayerToColorProperty(this, Category.DOUBLES)
+                                                    tooltip {
+                                                        bind(textProperty(), pos.spot1.playerProperty, PlayerPointsConverter(Category.DOUBLES))
+                                                    }
                                                 }
 
                                                 right = hbox(5) {
@@ -187,6 +196,9 @@ class StandardLineupView(val players: List<Player> = JsonFileHandler().loadPlaye
                                                         bind(pos.spot2.playerProperty, converter = PlayerStringConverter())
                                                     }
                                                     bindPlayerToColorProperty(this, Category.DOUBLES)
+                                                    tooltip {
+                                                        bind(textProperty(), pos.spot2.playerProperty, PlayerPointsConverter(Category.DOUBLES))
+                                                    }
                                                 }
                                                 right = hbox(5) {
                                                     addClass(LineupStyle.buttonsBox)
@@ -223,6 +235,9 @@ class StandardLineupView(val players: List<Player> = JsonFileHandler().loadPlaye
                                                         bind(pos.spot.playerProperty, converter = PlayerStringConverter())
                                                     }
                                                     bindPlayerToColorProperty(this, Category.SINGLES)
+                                                    tooltip {
+                                                        bind(textProperty(), pos.spot.playerProperty, PlayerPointsConverter(Category.SINGLES))
+                                                    }
                                                 }
 
                                                 right = hbox(5) {
