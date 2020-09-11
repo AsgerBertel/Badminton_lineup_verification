@@ -86,15 +86,14 @@ class StandardLineupView(val players: List<Player> = JsonFileHandler().loadPlaye
                                     is MixedPosition -> {
                                         center = vbox(LineupStyle.betweenPlayersSize) {
                                             borderpane {
-                                                var l = label()
                                                 center = hbox {
                                                     addClass(LineupStyle.doublesPlayerName)
-                                                    l = label {
+                                                    label {
                                                         addClass(LineupStyle.playerName)
                                                         bind(pos.spot1.playerProperty, converter = PlayerStringConverter())
                                                     }
                                                     bindPlayerToColorProperty(this, Category.MIXED)
-                                                    onMouseClicked = EventHandler { changePlayer(pos, pos.spot1) }
+                                                    onMouseClicked = EventHandler { changePlayer(pos.spot1) }
                                                     tooltip {
                                                         bind(textProperty(), pos.spot1.playerProperty, PlayerPointsConverter(Category.MIXED))
                                                     }
@@ -110,15 +109,14 @@ class StandardLineupView(val players: List<Player> = JsonFileHandler().loadPlaye
                                                 }
                                             }
                                             borderpane {
-                                                var l = label()
                                                 center = hbox {
                                                     addClass(LineupStyle.doublesPlayerName)
-                                                    l = label {
+                                                    label {
                                                         addClass(LineupStyle.playerName)
                                                         bind(pos.spot2.playerProperty, converter = PlayerStringConverter())
                                                     }
                                                     bindPlayerToColorProperty(this, Category.MIXED)
-                                                    onMouseClicked = EventHandler { changePlayer(pos, pos.spot2) }
+                                                    onMouseClicked = EventHandler { changePlayer(pos.spot2) }
                                                     tooltip {
                                                         bind(textProperty(), pos.spot2.playerProperty, PlayerPointsConverter(Category.MIXED))
                                                     }                                               
@@ -138,15 +136,14 @@ class StandardLineupView(val players: List<Player> = JsonFileHandler().loadPlaye
                                     is DoublesPosition -> {
                                         center = vbox(LineupStyle.betweenPlayersSize) {
                                             borderpane {
-                                                var l = label()
                                                 center = hbox {
                                                     addClass(LineupStyle.doublesPlayerName)
-                                                    l = label {
+                                                    label {
                                                         addClass(LineupStyle.playerName)
                                                         bind(pos.spot1.playerProperty, converter = PlayerStringConverter())
                                                     }
                                                     bindPlayerToColorProperty(this, Category.DOUBLES)
-                                                    onMouseClicked = EventHandler { changePlayer(pos, pos.spot1) }
+                                                    onMouseClicked = EventHandler { changePlayer(pos.spot1) }
                                                     tooltip {
                                                         bind(textProperty(), pos.spot1.playerProperty, PlayerPointsConverter(Category.DOUBLES))
                                                     }
@@ -162,15 +159,14 @@ class StandardLineupView(val players: List<Player> = JsonFileHandler().loadPlaye
                                                 }
                                             }
                                             borderpane {
-                                                var l = label()
                                                 center = hbox {
                                                     addClass(LineupStyle.doublesPlayerName)
-                                                    l = label {
+                                                    label {
                                                         addClass(LineupStyle.playerName)
                                                         bind(pos.spot2.playerProperty, converter = PlayerStringConverter())
                                                     }
                                                     bindPlayerToColorProperty(this, Category.DOUBLES)
-                                                    onMouseClicked = EventHandler { changePlayer(pos, pos.spot2) }
+                                                    onMouseClicked = EventHandler { changePlayer(pos.spot2) }
                                                     tooltip {
                                                         bind(textProperty(), pos.spot2.playerProperty, PlayerPointsConverter(Category.DOUBLES))
                                                     }
@@ -180,7 +176,6 @@ class StandardLineupView(val players: List<Player> = JsonFileHandler().loadPlaye
                                                     button("Remove") {
                                                         action {
                                                             pos.spot2.player = Player()
-                                                            l.text = ""
                                                         }
                                                     }
                                                 }
@@ -190,15 +185,14 @@ class StandardLineupView(val players: List<Player> = JsonFileHandler().loadPlaye
                                     is SinglesPosition -> {
                                         center = vbox(LineupStyle.betweenPlayersSize) {
                                             borderpane {
-                                                var l = label()
                                                 center = hbox {
                                                     addClass(LineupStyle.singlesPlayerName)
-                                                    l = label {
+                                                    label {
                                                         addClass(LineupStyle.playerName)
                                                         bind(pos.spot.playerProperty, converter = PlayerStringConverter())
                                                     }
                                                     bindPlayerToColorProperty(this, Category.SINGLES)
-                                                    onMouseClicked = EventHandler { changePlayer(pos, pos.spot) }
+                                                    onMouseClicked = EventHandler { changePlayer(pos.spot) }
                                                     tooltip {
                                                         bind(textProperty(), pos.spot.playerProperty, PlayerPointsConverter(Category.SINGLES))
                                                     }
@@ -224,7 +218,7 @@ class StandardLineupView(val players: List<Player> = JsonFileHandler().loadPlaye
         }
     }
 
-    private fun changePlayer(pos:Position, spot:PositionSpot) {
+    private fun changePlayer(spot:PositionSpot) {
         val choosePlayerFragment = ChoosePlayerFragment(obPlayers) { spot.sexReq == null || it.sex.knownEqual(spot.sexReq!!)  }.apply { openModal(block = true) }
 
         if(choosePlayerFragment.getResult() != null) {
