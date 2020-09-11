@@ -3,9 +3,11 @@ package gui.view
 import javafx.beans.property.SimpleObjectProperty
 import javafx.collections.ObservableList
 import javafx.collections.transformation.SortedList
+import javafx.scene.control.TableRow
 import javafx.util.Duration
 import model.Player
 import tornadofx.*
+import javax.swing.text.TableView
 
 
 class ChoosePlayerFragment(players: ObservableList<Player>, predicate: (Player) -> Boolean) : Fragment() {
@@ -16,8 +18,34 @@ class ChoosePlayerFragment(players: ObservableList<Player>, predicate: (Player) 
     private var resultPlayer:Player? = null
 
     init {
-        // Filter the players
-        val filteredPlayers = players.filtered { predicate(it) }
+        val filteredPlayers = players.filtered { predicate(it)}
+        textfield {
+            promptText = "Search for name or ID";
+            isFocusTraversable = false;
+
+            textProperty().addListener { observable, oldValue, newValue ->
+                filteredPlayers.setPredicate { myObject ->
+                    // If filter text is empty, display all players
+                    if (newValue == null || newValue.isEmpty()) {
+                        return@setPredicate true
+                    }
+
+                    // Compare name field in object with filter.
+                    val lowerCaseFilter: String = newValue.toLowerCase()
+                    if (java.lang.String.valueOf(myObject.name).toLowerCase().contains(lowerCaseFilter)) {
+                        return@setPredicate true
+                        // Filter matches name.
+                    }
+                    false // Does not match.
+                    // Compare badmintonID field in object with filter.
+                    if(myObject.badmintonId.toString().contains(lowerCaseFilter)){
+                        return@setPredicate true
+                    }
+                    false
+                }
+            }
+
+        }
         val sortableData: SortedList<Player> = SortedList<Player>(filteredPlayers)
 
         tableview(sortableData) {
@@ -32,12 +60,17 @@ class ChoosePlayerFragment(players: ObservableList<Player>, predicate: (Player) 
             readonlyColumn("Point", Player::doublesPoints)
             readonlyColumn("Point", Player::mixedPoints)
             bindSelected(selectedPlayerProperty)
-            this.onSelectionChange {
-                resultPlayer = selectedPlayer
-
-                runLater(Duration.millis(100.0)) {
-                    close()
+            setRowFactory {
+                val row: TableRow<Player> = TableRow()
+                row.setOnMouseClicked { event ->
+                    if (event.getClickCount() === 2 && !row.isEmpty()) {
+                        resultPlayer = selectedPlayer
+                        runLater(Duration.millis(100.0)) {
+                            close()
+                        }
+                    }
                 }
+                row
             }
 
 
