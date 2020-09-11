@@ -9,7 +9,6 @@ import java.lang.Exception
 const val RankListUrl = """https://www.badmintonplayer.dk/DBF/Ranglister/#287,2020,,0,,,1492,0,,,,15,,,,0,,,,,,"""
 const val progressFrac = (1 - (0.05 + 0.1)) / 7 // = 0,1214
 
-
 class RankListScraper {
     var progress = 0.0
 
@@ -20,7 +19,7 @@ class RankListScraper {
         // Starting up the web client and waits for JavaScript to finish
         val webClient = WebClient()
         var page = webClient.getPage<HtmlPage>(RankListUrl)
-        waitForJavaScript()
+        waitForJavaScript(webClient)
         progress = 0.05
 
         // Choose correct version
@@ -28,8 +27,7 @@ class RankListScraper {
                 page = page.getFirstByXPath<DomElement>("//*[@id=\"DropDownListVersions\"]").click()
                 findAndClickCorrectVersion(page);
                 clickSearch(page)
-                waitForJavaScript()
-
+                waitForJavaScript(webClient)
         } catch(e: Exception){
             println(e.stackTrace)}
 
@@ -46,7 +44,7 @@ class RankListScraper {
         // Scrape the second page
         try {
             page = page.getFirstByXPath<DomElement>("//*[@id=\"PanelResults\"]/table/tbody/tr[102]/td/a").click()
-            waitForJavaScript()
+            waitForJavaScript(webClient)
 
             pTable = scrapeRankListTable(page)
             for (elem in pTable)
@@ -58,7 +56,7 @@ class RankListScraper {
         for (i in 1..7) {
             // Change to next rank list page and set the new player table
             page = page.getFirstByXPath<DomElement>("//*[@id='PanelResults']/div/div[${i}]/a").click()
-            waitForJavaScript()
+            waitForJavaScript(webClient)
             pTable = scrapeRankListTable(page)
 
             // Try to match the player with one from the level rank list and give the points
@@ -100,7 +98,7 @@ class RankListScraper {
         }
     }
 
-    private fun waitForJavaScript() = Thread.sleep(500)
+    private fun waitForJavaScript(webClient: WebClient) = webClient.waitForBackgroundJavaScriptStartingBefore(100)
 
     private fun scrapeRankListTable(page: HtmlPage): MutableList<DomElement> {
         val grid = page.getFirstByXPath<HtmlTableBody>("""//*[@id="PanelResults"]/table/tbody""")

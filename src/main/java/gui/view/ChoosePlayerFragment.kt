@@ -36,7 +36,7 @@ class ChoosePlayerFragment(players: ObservableList<Player>, predicate: (Player) 
                         return@setPredicate true
                         // Filter matches name.
                     }
-                    
+
                     // Compare badmintonID field in object with filter.
                     if(myObject.badmintonId.toString().contains(lowerCaseFilter)){
                         return@setPredicate true

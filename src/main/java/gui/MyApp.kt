@@ -9,7 +9,7 @@ import javafx.stage.Stage
 import model.StandardLineupStructure
 import tornadofx.*
 
-class MyApp: App(StandardLineupView::class, LineupStyle::class) {
+class MyApp: App(ScrapeRankListView::class, LineupStyle::class) {
 
 
     init {
