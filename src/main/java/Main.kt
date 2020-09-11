@@ -6,7 +6,6 @@ fun main(args: Array<String>) {
     //val players = JsonFileHandler().loadPlayerFile("""C:\git\Team-match-verify\src\main\resources\PlayerList.json""")
     //val players = RankListScraper().scrapeRankList()
 
-
     launch<MyApp>(args)
 }
 

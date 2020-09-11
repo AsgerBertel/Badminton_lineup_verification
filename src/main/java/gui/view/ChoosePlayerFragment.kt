@@ -59,8 +59,8 @@ class ChoosePlayerFragment(players: ObservableList<Player>, val cat: Category? =
 
 
         textfield {
-            promptText = "Search for name or ID";
-            isFocusTraversable = false;
+            promptText = "Search for name or ID"
+            isFocusTraversable = false
 
             textProperty().addListener { _, _, newValue ->
                 filteredPlayers.setPredicate { myObject ->

@@ -26,8 +26,8 @@ class RankListScraper {
         // Choose correct version
         try{
                 page = page.getFirstByXPath<DomElement>("//*[@id=\"DropDownListVersions\"]").click()
-                findAndClickCorrectVersion(page);
-                clickSearch(page)
+                findAndClickCorrectVersion(page)
+            clickSearch(page)
                 waitForJavaScript(webClient)
         } catch(e: Exception){
             println(e.stackTrace)}
