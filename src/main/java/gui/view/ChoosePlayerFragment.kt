@@ -22,6 +22,7 @@ class ChoosePlayerFragment(players: ObservableList<Player>, val cat: Category? =
 
     private var table: TableView<Player>? = null
     private var nameColumn: TableColumn<Player, String>? = null
+    private var idColumn:TableColumn<Player, Int>? = null
     private var levelColumn: TableColumn<Player, Int>? = null
     private var singlesColumn: TableColumn<Player, Int>? = null
     private var doublesColumn: TableColumn<Player, Int>? = null
@@ -44,12 +45,18 @@ class ChoosePlayerFragment(players: ObservableList<Player>, val cat: Category? =
             Category.DOUBLES -> table!!.sortOrder.addAll(doublesColumn, levelColumn)
             Category.MIXED -> table!!.sortOrder.addAll(mixedColumn, levelColumn)
         }
+
+        for (c in table!!.columns.filter { it != nameColumn })
+            c.contentWidth(padding = 5.0, useAsMin = true, useAsMax = true)
+
+        nameColumn!!.minWidth = 120.0
     }
 
 
     init {
         val filteredPlayers = FilteredList(players)
         filteredPlayers.setPredicate(predicate)
+
 
         textfield {
             promptText = "Search for name or ID";
@@ -73,18 +80,19 @@ class ChoosePlayerFragment(players: ObservableList<Player>, val cat: Category? =
                     return@setPredicate false
                 }
             }
-
         }
         val sortableData: SortedList<Player> = SortedList<Player>(filteredPlayers)
 
         table = tableview(sortableData) {
             sortableData.comparatorProperty().bind(comparatorProperty())
-            root.setPrefSize(623.5, 500.0)
+
             prefHeightProperty().bind(root.heightProperty())
             prefWidthProperty().bind(root.widthProperty())
+            root.setPrefSize(650.0, 500.0)
+            columnResizePolicy = SmartResize.POLICY
 
             nameColumn = readonlyColumn("Name", Player::name)
-            readonlyColumn("ID", Player::badmintonId)
+            idColumn = readonlyColumn("ID", Player::badmintonId)
             levelColumn = readonlyColumn("Level Points", Player::levelPoints)
             singlesColumn = readonlyColumn("Single Points", Player::singlesPoints)
             doublesColumn = readonlyColumn("Double Points", Player::doublesPoints)
