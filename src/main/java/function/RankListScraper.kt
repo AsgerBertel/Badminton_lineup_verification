@@ -2,6 +2,7 @@ package function
 
 import com.gargoylesoftware.htmlunit.WebClient
 import com.gargoylesoftware.htmlunit.html.*
+import io.JsonFileHandler
 import model.Player
 import model.Sex
 import java.lang.Exception
@@ -75,9 +76,7 @@ class RankListScraper {
         progress = 1.0
         println("Scraping finished. Found ${players.size} players.")
 
-        //val jsonFileHandler = JsonFileHandler()
-        //jsonFileHandler.saveJsonPlayerFile(players)
-        //println(jsonFileHandler.loadPlayerFile("PlayerList.json"))
+        JsonFileHandler.saveJsonPlayerFile(players)
         return players
     }
 

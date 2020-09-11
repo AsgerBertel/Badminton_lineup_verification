@@ -10,19 +10,22 @@ import java.io.FileWriter
 import java.lang.reflect.Type
 
 
-class JsonFileHandler() {
-    val gson = Gson()
-    fun saveJsonPlayerFile(players: List<Player>) {
-        FileWriter("PlayerList.json").use { writer ->
-            val gson = GsonBuilder().create()
-            gson.toJson(players, writer)
+class JsonFileHandler {
+    companion object {
+        private val gson = Gson()
+
+        fun saveJsonPlayerFile(players: List<Player>) {
+            FileWriter("src/main/resources/PlayerList.json").use { writer ->
+                val gson = GsonBuilder().create()
+                gson.toJson(players, writer)
+            }
         }
-    }
-        fun loadPlayerFile(pathToFile: String):List<Player>{
+
+        fun loadPlayerFile(pathToFile: String):List<Player> {
             val bufferedReader: BufferedReader = File(pathToFile).bufferedReader()
             val playerString = bufferedReader.use { it.readText() }
             val collectionType: Type? = object : TypeToken<List<Player?>?>() {}.type
             return gson.fromJson(playerString, collectionType)
+        }
     }
-
 }
