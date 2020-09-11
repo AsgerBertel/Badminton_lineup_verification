@@ -38,9 +38,11 @@ class LineupStyle : Stylesheet() {
         const val betweenLineupGroup = 15
 
         private const val standardGrey = 230
+        private const val activeSpotGrey = 245
+        private const val emptyGrey = 200
         val standardBackgroundColor = c(standardGrey, standardGrey, standardGrey)
-        val playerNameBackgroundColor = c(standardGrey+15, standardGrey+15, standardGrey+15)
-        val playerNameEmptyBackgroundColor = c(standardGrey-20, standardGrey-20, standardGrey-20)
+        val playerNameBackgroundColor = c(activeSpotGrey, activeSpotGrey, activeSpotGrey)
+        val playerNameEmptyBackgroundColor = c(emptyGrey, emptyGrey, emptyGrey)
 
         val legalPlayerColor = c(220,255,220)
         val illegalPlayerColor = c(255,220,220)

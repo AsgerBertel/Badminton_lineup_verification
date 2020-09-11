@@ -15,7 +15,7 @@ import model.*
 import tornadofx.*
 
 
-class StandardLineupView(val players: List<Player> = JsonFileHandler().loadPlayerFile("src/main/resources/PlayerList.json"), val lineup: StandardLineupStructure = FakeData.getLineup()) : View() {
+class StandardLineupView(val players: List<Player> = JsonFileHandler().loadPlayerFile("src/main/resources/PlayerList.json"), val lineup: StandardLineupStructure = StandardLineupStructure()) : View() {
     override val root = vbox()
 
     val controller:StandardLineupController by inject()
@@ -175,7 +175,7 @@ class StandardLineupView(val players: List<Player> = JsonFileHandler().loadPlaye
                                                     addClass(LineupStyle.buttonsBox)
                                                     button("Remove") {
                                                         action {
-                                                            pos.spot2.player = Player()
+                                                            resetSpot(pos.spot2)
                                                         }
                                                     }
                                                 }
