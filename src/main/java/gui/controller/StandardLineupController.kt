@@ -33,7 +33,6 @@ class StandardLineupController : Controller() {
                         Verdict.EMPTY -> LineupStyle.singlesPlayerNameEmpty.name
                         Verdict.WARNING -> LineupStyle.singlesPlayerName.name
                         Verdict.UNKNOWN -> LineupStyle.singlesPlayerName.name
-                        Verdict.EMPTY -> TODO()
                     }
                 }
                 Category.MIXED, Category.DOUBLES -> {
@@ -43,7 +42,6 @@ class StandardLineupController : Controller() {
                         Verdict.EMPTY -> LineupStyle.doublesPlayerNameEmpty.name
                         Verdict.WARNING -> LineupStyle.doublesPlayerName.name
                         Verdict.UNKNOWN -> LineupStyle.doublesPlayerName.name
-                        Verdict.EMPTY -> TODO()
                     }
                 }
                 else -> throw Exception()

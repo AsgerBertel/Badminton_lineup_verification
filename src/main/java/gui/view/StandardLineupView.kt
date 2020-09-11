@@ -246,6 +246,4 @@ class StandardLineupView(val players: List<Player> = JsonFileHandler().loadPlaye
 
         return res
     }
-
-    fun getDefaultPlayers(): List<Player> = JsonFileHandler().loadPlayerFile(resources["PlayerList.json"])
 }

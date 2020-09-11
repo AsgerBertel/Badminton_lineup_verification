@@ -15,10 +15,15 @@ class ScrapeRankListController: Controller() {
     val view: ScrapeRankListView by inject()
 
     fun scrape() {
-        val scrapedPlayers = scraper.scrapeRankList()
+        val scrapedPlayers:List<Player>? = try {
+            scraper.scrapeRankList()
+        }
+        catch (e:Exception) {
+            null
+        }
         val players: List<Player>
 
-        if(scrapedPlayers.isEmpty()) {
+        if(scrapedPlayers == null) {
             players = loadPlayersFromJSON()
             println("Unable to load any players")
         }

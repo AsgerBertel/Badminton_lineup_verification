@@ -65,7 +65,7 @@ class LineupVerification {
                         break
 
                     val currentPos = lc.positions[i]
-                    val currentPoints = currentPos.points ?: break
+                    val currentPoints = currentPos.points
 
                     if (lastPoints + lc.allowedPointMargin < currentPoints) {
                         errorToPosition(lastPos, PointDifferenceError(lastPos, currentPos))
