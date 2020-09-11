@@ -16,6 +16,12 @@ class LineupVerification {
 
             verifyTwoPositionsPerPlayer(spots)
 
+            for (spot in spots)
+                if(spot.player == Player()) {
+                    spot.errors.clear()
+                    spot.errors.add(LineupEmpty())
+                }
+
             setIllegality(spots)
         }
 
@@ -25,10 +31,10 @@ class LineupVerification {
 
         private fun setIllegality(l:List<PositionSpot>) {
             l.forEach {
-                if (it.player == Player()) {
-                    it.verdict = Verdict.UNKNOWN
-                } else if (it.errors.any { s -> s is LineupError })
+                if (it.errors.any { s -> s is LineupError })
                     it.verdict = Verdict.ILLEGAL
+                else if (it.errors.any {s -> s is LineupEmpty })
+                    it.verdict = Verdict.EMPTY
                 else if (it.errors.any { s -> s is LineupWarning })
                     it.verdict = Verdict.WARNING
                 else
@@ -57,7 +63,7 @@ class LineupVerification {
         }
 
         private fun verifyTwoPositionsPerPlayer(spots: List<PositionSpot>) {
-            for (player in spots.map { it.player }.distinctBy { it.badmintonId }) {
+            for (player in spots.map { it.player }.distinct()) {
                 val count = spots.count { it.player == player }
                 if (count < 2) {
                     spots.filter { it.player == player }.forEach {
