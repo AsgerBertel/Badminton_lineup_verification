@@ -7,22 +7,35 @@ class LineupVerification {
     companion object {
         fun verifyLineup(lineup: LineupStructure)  {
             val spots = lineup.serialize()
-
             clearErrors(spots)
 
-            for (lcg in lineup.categoryGroups) {
-                verifyPoints(lcg)
-            }
+            verifyPoints(lineup)
 
             verifyTwoPositionsPerPlayer(spots)
 
+            verifyNoMoreThanOneSpotInCategory(lineup)
+
+            setEmptySpots(spots)
+
+            setIllegality(spots)
+        }
+
+        private fun verifyNoMoreThanOneSpotInCategory(lineup: LineupStructure) {
+            for (lc in lineup.categoryGroups) {
+                val spots = lc.serialize().distinct()
+
+                for (spot in spots)
+                    if (spots.count {it.player == spot.player} > 1)
+                        spot.errors.add(TooManyOccurencesInSameCategoryError(spot.player))
+            }
+        }
+
+        private fun setEmptySpots(spots: List<PositionSpot>) {
             for (spot in spots)
                 if(spot.player == Player()) {
                     spot.errors.clear()
                     spot.errors.add(LineupEmpty())
                 }
-
-            setIllegality(spots)
         }
 
         private fun clearErrors(l:List<PositionSpot>) {
@@ -42,23 +55,25 @@ class LineupVerification {
             }
         }
 
-        private fun verifyPoints(lc: LineupCategoryGroup) {
-            var lastPos = lc.positions[0]
-            var lastPoints = lastPos.points
+        private fun verifyPoints(lineup: LineupStructure) {
+            for (lc in lineup.categoryGroups) {
+                var lastPos = lc.positions[0]
+                var lastPoints = lastPos.points
 
-            for (i in 1 until lc.positions.size) {
-                if (lastPoints == 0)
-                    break
+                for (i in 1 until lc.positions.size) {
+                    if (lastPoints == 0)
+                        break
 
-                val currentPos = lc.positions[i]
-                val currentPoints = currentPos.points ?: break
+                    val currentPos = lc.positions[i]
+                    val currentPoints = currentPos.points ?: break
 
-                if (lastPoints + lc.allowedPointMargin < currentPoints) {
-                    errorToPosition(lastPos, PointDifferenceError(lastPos, currentPos))
+                    if (lastPoints + lc.allowedPointMargin < currentPoints) {
+                        errorToPosition(lastPos, PointDifferenceError(lastPos, currentPos))
+                    }
+
+                    lastPos = currentPos
+                    lastPoints = currentPoints
                 }
-
-                lastPos = currentPos
-                lastPoints = currentPoints
             }
         }
 
