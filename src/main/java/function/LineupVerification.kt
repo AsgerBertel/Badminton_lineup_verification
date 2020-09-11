@@ -2,8 +2,6 @@ package function
 
 import model.*
 import model.lineupError.*
-import kotlin.reflect.typeOf
-import kotlin.reflect.full.isSubclassOf
 
 class LineupVerification {
     companion object {
@@ -28,11 +26,11 @@ class LineupVerification {
         private fun setIllegality(l:List<PositionSpot>) {
             l.forEach {
                 if (it.errors.any { s -> s is LineupError })
-                    it.verdict = IllegalityVerdict.ILLEGAL
+                    it.verdict = Verdict.ILLEGAL
                 else if (it.errors.any { s -> s is LineupWarning })
-                    it.verdict = IllegalityVerdict.WARNING
+                    it.verdict = Verdict.WARNING
                 else
-                    it.verdict = IllegalityVerdict.LEGAL
+                    it.verdict = Verdict.LEGAL
             }
         }
 
