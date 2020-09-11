@@ -27,7 +27,9 @@ class LineupVerification {
 
         private fun setIllegality(l:List<PositionSpot>) {
             l.forEach {
-                if (it.errors.any { s -> s is LineupError })
+                if (it.player == Player()) {
+                    it.verdict = IllegalityVerdict.UNKNOWN
+                } else if (it.errors.any { s -> s is LineupError })
                     it.verdict = IllegalityVerdict.ILLEGAL
                 else if (it.errors.any { s -> s is LineupWarning })
                     it.verdict = IllegalityVerdict.WARNING

@@ -1,5 +1,6 @@
 package gui.view
 
+import function.IllegalityVerdict
 import gui.PlayerStringConverter
 import gui.IntConverter
 import gui.controller.StandardLineupController
@@ -108,7 +109,7 @@ class StandardLineupView(val players: List<Player> = JsonFileHandler().loadPlaye
                                                     }
                                                     button("Remove") {
                                                         action {
-                                                            pos.spot1.player = Player()
+                                                            resetSpot(pos.spot1)
                                                         }
                                                     }
                                                 }
@@ -138,7 +139,7 @@ class StandardLineupView(val players: List<Player> = JsonFileHandler().loadPlaye
                                                     }
                                                     button("Remove") {
                                                         action {
-                                                            pos.spot2.player = Player()
+                                                            resetSpot(pos.spot2)
                                                         }
                                                     }
                                                 }
@@ -173,7 +174,7 @@ class StandardLineupView(val players: List<Player> = JsonFileHandler().loadPlaye
                                                     }
                                                     button("Remove") {
                                                         action {
-                                                            pos.spot1.player = Player()
+                                                            resetSpot(pos.spot1)
                                                         }
                                                     }
                                                 }
@@ -199,13 +200,11 @@ class StandardLineupView(val players: List<Player> = JsonFileHandler().loadPlaye
 
                                                                 controller.verify()
                                                             }
-                                                            l.text = pos.spot2.player.name
                                                         }
                                                     }
                                                     button("Remove") {
                                                         action {
-                                                            pos.spot2.player = Player()
-                                                            l.text = ""
+                                                            resetSpot(pos.spot2)
                                                         }
                                                     }
                                                 }
@@ -240,7 +239,7 @@ class StandardLineupView(val players: List<Player> = JsonFileHandler().loadPlaye
                                                     }
                                                     button("Remove") {
                                                         action {
-                                                            pos.spot.player = Player()
+                                                            resetSpot(pos.spot)
                                                         }
                                                     }
                                                 }
@@ -254,6 +253,11 @@ class StandardLineupView(val players: List<Player> = JsonFileHandler().loadPlaye
                 }
             }
         }
+    }
+
+    private fun resetSpot(spot: PositionSpot) {
+        spot.player = Player()
+        controller.verify()
     }
 
     private fun bindPlayerToColorProperty(h: HBox, cat:Category) {
