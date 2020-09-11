@@ -1,11 +1,12 @@
 package gui.view
 
-import javafx.application.Platform
-import model.Player
 import javafx.beans.property.SimpleObjectProperty
 import javafx.collections.ObservableList
+import javafx.collections.transformation.SortedList
 import javafx.util.Duration
+import model.Player
 import tornadofx.*
+
 
 class ChoosePlayerFragment(players: ObservableList<Player>, predicate: (Player) -> Boolean) : Fragment() {
     override val root = vbox()
@@ -17,10 +18,11 @@ class ChoosePlayerFragment(players: ObservableList<Player>, predicate: (Player) 
     init {
         // Filter the players
         val filteredPlayers = players.filtered { predicate(it) }
+        val sortableData: SortedList<Player> = SortedList<Player>(filteredPlayers)
 
-        tableview(filteredPlayers) {
+        tableview(sortableData) {
+            sortableData.comparatorProperty().bind(comparatorProperty())
             root.setPrefSize(500.0, 500.0)
-            columnResizePolicy = SmartResize.POLICY
             prefHeightProperty().bind(root.heightProperty())
             prefWidthProperty().bind(root.widthProperty())
             readonlyColumn("Name", Player::name)
@@ -33,7 +35,7 @@ class ChoosePlayerFragment(players: ObservableList<Player>, predicate: (Player) 
             this.onSelectionChange {
                 resultPlayer = selectedPlayer
 
-                runLater (Duration.millis(100.0)) {
+                runLater(Duration.millis(100.0)) {
                     close()
                 }
             }
