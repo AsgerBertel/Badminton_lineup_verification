@@ -25,11 +25,9 @@ class LineupStyle : Stylesheet() {
 
         val nameFontSize = 12.px
         val doublesBoxHeight = 60.px
-        val singlesBoxHeight = 50.px
+        val singlesBoxHeight = 40.px
         val playerLabelWidth = 220.px
 
-        val standardLineupMinHeight = (doublesBoxHeight * 7) + (singlesBoxHeight * 6)
-        val standardLineupMinWidth = playerLabelWidth
         val standardPadding = 5.px
         val standardRadius = 15.px
 
@@ -49,7 +47,6 @@ class LineupStyle : Stylesheet() {
     init {
         standardLineupBox {
             backgroundColor += standardBackgroundColor
-            minHeight = standardLineupMinHeight
         }
 
         singlesBox {
