@@ -25,7 +25,7 @@ class ScrapeRankListController: Controller() {
         if(scrapedPlayers == null) {
             println("Unable to scrape any players")
             try {
-                players = loadPlayersFromJSON()
+                players = JsonFileHandler.loadPlayerFile()
                 println("Players loaded from local JSON")
             }
             catch (e:Exception) {
@@ -42,6 +42,4 @@ class ScrapeRankListController: Controller() {
             view.replaceWith(StandardLineupView(players)::class)
         }
     }
-
-    private fun loadPlayersFromJSON() = JsonFileHandler.loadPlayerFile("src/main/resources/PlayerList.json")
 }

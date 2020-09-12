@@ -15,15 +15,14 @@ class JsonFileHandler {
         private val gson = Gson()
 
         fun saveJsonPlayerFile(players: List<Player>) {
-            FileWriter("src/main/resources/PlayerList.json").use { writer ->
+            FileWriter(this::class.java.classLoader.getResource("PlayerList.json")!!.path).use { writer ->
                 val gson = GsonBuilder().create()
                 gson.toJson(players, writer)
             }
         }
 
-        fun loadPlayerFile(pathToFile: String):List<Player> {
-            val bufferedReader: BufferedReader = File(pathToFile).bufferedReader()
-            val playerString = bufferedReader.use { it.readText() }
+        fun loadPlayerFile():List<Player> {
+            val playerString  = this::class.java.classLoader.getResource("PlayerList.json")?.readText()
             val collectionType: Type? = object : TypeToken<List<Player?>?>() {}.type
             return gson.fromJson(playerString, collectionType)
         }

@@ -5,12 +5,10 @@
       <options>
         <option name="appClass" value="Main.kt" />
         <option name="description" value="" />
-        <option name="height" value="" />
         <option name="htmlPlaceholderId" value="" />
         <option name="title" value="" />
         <option name="vendor" value="" />
         <option name="version" value="" />
-        <option name="width" value="" />
       </options>
     </properties>
     <root id="root">
