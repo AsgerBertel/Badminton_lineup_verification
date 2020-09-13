@@ -22,7 +22,7 @@ class JsonFileHandler {
         fun loadPlayerFile(): List<Player> {
             val playerString = this::class.java.classLoader.getResource("PlayerList.json")?.readText()
             val collectionType: Type? = object : TypeToken<List<Player?>?>() {}.type
-            return gson.fromJson(playerString, collectionType) ?: listOf()
+            return gson.fromJson(playerString, collectionType)
         }
     }
 }
