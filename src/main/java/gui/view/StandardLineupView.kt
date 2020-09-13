@@ -15,11 +15,11 @@ import model.*
 import tornadofx.*
 
 
-class StandardLineupView(val players: List<Player> = JsonFileHandler.loadPlayerFile(), val lineup: StandardLineupStructure = StandardLineupStructure()) : View() {
+class StandardLineupView(private val players: List<Player> = JsonFileHandler.loadPlayerFile(), val lineup: StandardLineupStructure = StandardLineupStructure()) : View() {
     override val root = vbox()
 
-    val controller: StandardLineupController by inject()
-    val obPlayers = playersToObservable()
+    private val controller: StandardLineupController by inject()
+    private val obPlayers = playersToObservable()
     val hboxList = mutableListOf<Pair<HBox, Category>>()
     val pointsList = mutableListOf<Pair<Label, Position>>()
 
