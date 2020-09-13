@@ -3,7 +3,7 @@ package gui.view
 import javafx.geometry.Pos
 import tornadofx.*
 
-class ScrapeRankListFinishView : View() {
+class ScrapeRankListFinishView: View() {
     override val root = vbox()
 
     init {

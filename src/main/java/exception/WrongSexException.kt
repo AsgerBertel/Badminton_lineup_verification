@@ -1,3 +1,5 @@
 package exception
 
-class WrongSexException(message: String) : Exception(message)
+import java.lang.Exception
+
+class WrongSexException(message:String) : Exception(message)

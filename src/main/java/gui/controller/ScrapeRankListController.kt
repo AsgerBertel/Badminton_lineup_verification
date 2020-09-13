@@ -9,31 +9,32 @@ import model.Player
 import tornadofx.*
 
 
-class ScrapeRankListController : Controller() {
+class ScrapeRankListController: Controller() {
     val scraper = RankListScraper()
     val view: ScrapeRankListView by inject()
 
     fun scrape() {
-        var scrapedPlayers: List<Player> = listOf()
+        var scrapedPlayers:List<Player> = listOf()
         val players: List<Player>
 
         try {
-            scrapedPlayers = scraper.scrapeRankList()
-        } catch (e: Exception) {
-            println("Exception in scraper")
+            scrapedPlayers =  scraper.scrapeRankList()
         }
+        catch (e:Exception) { println("Exception in scraper") }
 
-        if (scrapedPlayers.isEmpty()) {
+        if(scrapedPlayers.isEmpty()) {
             println("Loading players from local json...")
             try {
                 players = JsonFileHandler.loadPlayerFile()
                 println("Players loaded from local JSON")
-            } catch (e: Exception) {
+            }
+            catch (e:Exception) {
                 println("Unable to load players from local JSON")
                 throw e
             }
 
-        } else {
+        }
+        else {
             println("Players has been loaded from scraper")
             players = scrapedPlayers
         }

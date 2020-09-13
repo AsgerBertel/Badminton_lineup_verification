@@ -4,7 +4,7 @@ import model.StandardLineupStructure
 
 class FakeData {
     companion object {
-        fun getLineup(): StandardLineupStructure {
+        fun getLineup():StandardLineupStructure {
             val lineup = StandardLineupStructure()
 
             val P1 = Player("Frederik Bjergen", 1, 1)
@@ -55,7 +55,7 @@ class FakeData {
             return lineup
         }
 
-        fun getPlayers(): List<Player> {
+        fun getPlayers():List<Player> {
             val P1 = Player("Nicklas", 2, 2)
             P1.sex = Sex.MALE
             P1.singlesPoints = 500

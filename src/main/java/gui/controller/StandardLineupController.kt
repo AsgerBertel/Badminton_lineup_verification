@@ -1,14 +1,14 @@
 package gui.controller
 
-import function.LineupVerification
 import function.Verdict
+import function.LineupVerification
 import gui.style.LineupStyle
 import gui.view.StandardLineupView
 import model.Category
 import tornadofx.*
 
 class StandardLineupController : Controller() {
-    private val view: StandardLineupView by inject()
+    private val view:StandardLineupView by inject()
 
     init {
 
@@ -25,9 +25,9 @@ class StandardLineupController : Controller() {
         for ((i, h) in view.hboxList.withIndex()) {
             h.first.styleClass.clear()
 
-            val style = when (h.second) {
+            val style = when(h.second) {
                 Category.SINGLES -> {
-                    when (positions[i].verdict) {
+                    when(positions[i].verdict) {
                         Verdict.LEGAL -> LineupStyle.singlesPlayerNameLegal.name
                         Verdict.ILLEGAL -> LineupStyle.singlesPlayerNameIllegal.name
                         Verdict.EMPTY -> LineupStyle.singlesPlayerNameEmpty.name
@@ -36,7 +36,7 @@ class StandardLineupController : Controller() {
                     }
                 }
                 Category.MIXED, Category.DOUBLES -> {
-                    when (positions[i].verdict) {
+                    when(positions[i].verdict) {
                         Verdict.LEGAL -> LineupStyle.doublesPlayerNameLegal.name
                         Verdict.ILLEGAL -> LineupStyle.doublesPlayerNameIllegal.name
                         Verdict.EMPTY -> LineupStyle.doublesPlayerNameEmpty.name

@@ -10,11 +10,11 @@ class Player(val name: String = "", val birthday: Int = 0, val badmintonId: Int 
 
     override fun toString() =
             "Name: $name, sex: $sex" +
-                    "\nID: $badmintonId, birthday: $birthday" +
-                    "\nPoints: $levelPoints, $singlesPoints, $doublesPoints, $mixedPoints"
+            "\nID: $badmintonId, birthday: $birthday"+
+            "\nPoints: $levelPoints, $singlesPoints, $doublesPoints, $mixedPoints"
 
-    fun getPoints(type: Category): Int {
-        return when (type) {
+    fun getPoints(type:Category):Int {
+        return when(type) {
             Category.LEVEL -> levelPoints
             Category.SINGLES -> singlesPoints
             Category.DOUBLES -> doublesPoints

@@ -5,7 +5,7 @@ import javafx.beans.property.SimpleObjectProperty
 import model.lineupError.LineupVerdict
 import tornadofx.*
 
-class PositionSpot(val sexReq: Sex?) {
+class PositionSpot(val sexReq:Sex?) {
     val playerProperty = SimpleObjectProperty(Player())
     var player: Player by playerProperty
 
