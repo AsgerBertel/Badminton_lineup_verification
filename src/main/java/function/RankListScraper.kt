@@ -24,13 +24,15 @@ class RankListScraper {
         progress = 0.05
 
         // Choose correct version
-        try{
-                page = page.getFirstByXPath<DomElement>("//*[@id=\"DropDownListVersions\"]").click()
-                findAndClickCorrectVersion(page)
+        try {
+            page = page.getFirstByXPath<DomElement>("//*[@id=\"DropDownListVersions\"]").click()
+            findAndClickCorrectVersion(page)
             clickSearch(page)
-                waitForJavaScript(webClient)
-        } catch(e: Exception){
-            println(e.stackTrace)}
+            waitForJavaScript(webClient)
+        }
+        catch(e: Exception) {
+            println(e.stackTrace)
+        }
 
 
         progress = 0.10
@@ -84,12 +86,12 @@ class RankListScraper {
         page.getFirstByXPath<DomElement>("//*[@id=\"LinkButtonSearch\"]").click<HtmlPage>()
     }
 
-    private fun findAndClickCorrectVersion(page: HtmlPage){
+    private fun findAndClickCorrectVersion(page: HtmlPage) {
         val listOfVersions = page.getFirstByXPath<HtmlSelect>("//*[@id=\"DropDownListVersions\"]")
         val vList = (listOfVersions.childElements).toMutableList()
 
         for(element in  vList){
-            if(element.textContent.endsWith("(senior)", true)) {
+            if(element.textContent.contains("(senior)", true)) {
                 element.click<(HtmlPage)>()
                 println("Found version:" + element.textContent)
                 return

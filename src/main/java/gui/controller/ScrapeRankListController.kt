@@ -14,16 +14,16 @@ class ScrapeRankListController: Controller() {
     val view: ScrapeRankListView by inject()
 
     fun scrape() {
-        val scrapedPlayers:List<Player>? = try {
-            scraper.scrapeRankList()
-        }
-        catch (e:Exception) {
-            null
-        }
+        var scrapedPlayers:List<Player> = listOf()
         val players: List<Player>
 
-        if(scrapedPlayers == null) {
-            println("Unable to scrape any players")
+        try {
+            scrapedPlayers =  scraper.scrapeRankList()
+        }
+        catch (e:Exception) { println("Exception in scraper") }
+
+        if(scrapedPlayers.isEmpty()) {
+            println("Loading players from local json...")
             try {
                 players = JsonFileHandler.loadPlayerFile()
                 println("Players loaded from local JSON")
