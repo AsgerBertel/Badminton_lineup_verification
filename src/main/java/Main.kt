@@ -1,5 +1,5 @@
 import gui.MyApp
-import tornadofx.launch
+import tornadofx.*
 
 fun main(args: Array<String>) {
 

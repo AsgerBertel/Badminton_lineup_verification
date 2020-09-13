@@ -1,6 +1,5 @@
 package gui.style
 
-import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.paint.Color
 import javafx.scene.text.FontWeight
@@ -44,8 +43,8 @@ class LineupStyle : Stylesheet() {
         val playerNameBackgroundColor = c(activeSpotGrey, activeSpotGrey, activeSpotGrey)
         val playerNameEmptyBackgroundColor = c(emptyGrey, emptyGrey, emptyGrey)
 
-        val legalPlayerColor = c(220,255,220)
-        val illegalPlayerColor = c(255,220,220)
+        val legalPlayerColor = c(220, 255, 220)
+        val illegalPlayerColor = c(255, 220, 220)
     }
 
     init {

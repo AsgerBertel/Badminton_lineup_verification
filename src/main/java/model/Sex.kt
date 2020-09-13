@@ -8,9 +8,9 @@ enum class Sex {
     }
 
     override fun toString() =
-        when(this) {
-            FEMALE -> "w"
-            MALE -> "m"
-            UNKNOWN -> "N/A"
-        }
+            when (this) {
+                FEMALE -> "w"
+                MALE -> "m"
+                UNKNOWN -> "N/A"
+            }
 }

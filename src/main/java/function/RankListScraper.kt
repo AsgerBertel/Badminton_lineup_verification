@@ -1,11 +1,13 @@
 package function
 
 import com.gargoylesoftware.htmlunit.WebClient
-import com.gargoylesoftware.htmlunit.html.*
+import com.gargoylesoftware.htmlunit.html.DomElement
+import com.gargoylesoftware.htmlunit.html.HtmlPage
+import com.gargoylesoftware.htmlunit.html.HtmlSelect
+import com.gargoylesoftware.htmlunit.html.HtmlTableBody
 import io.JsonFileHandler
 import model.Player
 import model.Sex
-import java.lang.Exception
 
 const val RankListUrl = """https://www.badmintonplayer.dk/DBF/Ranglister/#287,2020,,0,,,1492,0,,,,15,,,,0,,,,,,"""
 const val progressFrac = (1 - (0.05 + 0.1)) / 7 // = 0,1214
@@ -29,8 +31,7 @@ class RankListScraper {
             findAndClickCorrectVersion(page)
             clickSearch(page)
             waitForJavaScript(webClient)
-        }
-        catch(e: Exception) {
+        } catch (e: Exception) {
             println(e.stackTrace)
         }
 
@@ -52,7 +53,8 @@ class RankListScraper {
             pTable = scrapeRankListTable(page)
             for (elem in pTable)
                 players.add(initPlayerFromLevelRankList(elem))
-        } catch (e: Exception) { }
+        } catch (e: Exception) {
+        }
         progress += progressFrac
 
         // Iterates over the 7 different rank lists to get the points
@@ -82,7 +84,7 @@ class RankListScraper {
         return players
     }
 
-    private fun clickSearch(page: HtmlPage){
+    private fun clickSearch(page: HtmlPage) {
         page.getFirstByXPath<DomElement>("//*[@id=\"LinkButtonSearch\"]").click<HtmlPage>()
     }
 
@@ -90,8 +92,8 @@ class RankListScraper {
         val listOfVersions = page.getFirstByXPath<HtmlSelect>("//*[@id=\"DropDownListVersions\"]")
         val vList = (listOfVersions.childElements).toMutableList()
 
-        for(element in  vList){
-            if(element.textContent.contains("(senior)", true)) {
+        for (element in vList) {
+            if (element.textContent.contains("(senior)", true)) {
                 element.click<(HtmlPage)>()
                 println("Found version:" + element.textContent)
                 return

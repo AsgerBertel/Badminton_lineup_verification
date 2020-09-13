@@ -9,7 +9,7 @@ import tornadofx.*
 import kotlin.concurrent.thread
 import kotlin.math.ceil
 
-class ScrapeRankListView: View() {
+class ScrapeRankListView : View() {
     override val root = vbox()
     private val controller: ScrapeRankListController by inject()
 

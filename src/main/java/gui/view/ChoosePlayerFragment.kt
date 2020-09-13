@@ -18,11 +18,11 @@ class ChoosePlayerFragment(players: ObservableList<Player>, val cat: Category? =
 
     private val selectedPlayerProperty = SimpleObjectProperty<Player>()
     private val selectedPlayer: Player by selectedPlayerProperty
-    private var resultPlayer:Player? = null
+    private var resultPlayer: Player? = null
 
     private var table: TableView<Player>? = null
     private var nameColumn: TableColumn<Player, String>? = null
-    private var idColumn:TableColumn<Player, Int>? = null
+    private var idColumn: TableColumn<Player, Int>? = null
     private var levelColumn: TableColumn<Player, Int>? = null
     private var singlesColumn: TableColumn<Player, Int>? = null
     private var doublesColumn: TableColumn<Player, Int>? = null
@@ -39,7 +39,7 @@ class ChoosePlayerFragment(players: ObservableList<Player>, val cat: Category? =
         singlesColumn!!.sortType = TableColumn.SortType.DESCENDING
         doublesColumn!!.sortType = TableColumn.SortType.DESCENDING
         mixedColumn!!.sortType = TableColumn.SortType.DESCENDING
-        when(cat) {
+        when (cat) {
             Category.LEVEL -> table!!.sortOrder.add(levelColumn)
             Category.SINGLES -> table!!.sortOrder.addAll(singlesColumn, levelColumn)
             Category.DOUBLES -> table!!.sortOrder.addAll(doublesColumn, levelColumn)
@@ -68,7 +68,7 @@ class ChoosePlayerFragment(players: ObservableList<Player>, val cat: Category? =
                     val lowerCaseFilter: String = newValue.toLowerCase()
 
                     // Must adhere to the original predicate from parameter
-                    if(predicate(myObject)) {
+                    if (predicate(myObject)) {
                         // Filter matches name.
                         if (java.lang.String.valueOf(myObject.name).toLowerCase().contains(lowerCaseFilter))
                             return@setPredicate true
