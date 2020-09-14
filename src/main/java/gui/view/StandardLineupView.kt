@@ -10,6 +10,7 @@ import javafx.collections.ObservableList
 import javafx.event.EventHandler
 import javafx.geometry.Orientation
 import javafx.scene.control.Label
+import javafx.scene.image.Image
 import javafx.scene.layout.HBox
 import model.*
 import tornadofx.*
@@ -31,6 +32,8 @@ class StandardLineupView(val players: List<Player> = JsonFileHandler.loadPlayerF
         primaryStage.sizeToScene()
         primaryStage.minHeight = primaryStage.height
         primaryStage.minWidth = primaryStage.width
+
+        primaryStage.icons += Image("logo.png")
 
         controller.verify()
     }
