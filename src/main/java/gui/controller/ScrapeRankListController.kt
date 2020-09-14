@@ -6,8 +6,6 @@ import gui.view.StandardLineupView
 import io.JsonFileHandler
 import javafx.application.Platform
 import javafx.scene.control.Alert
-import javafx.stage.Modality
-import javafx.util.Duration
 import model.Player
 import tornadofx.*
 
@@ -34,7 +32,7 @@ class ScrapeRankListController : Controller() {
             } catch (e: Exception) {
                 println("Unable to save players from local JSON")
                 Platform.runLater {
-                    alert(Alert.AlertType.ERROR, "Unknown error in saving scraped players locally...\n " +
+                    alert(Alert.AlertType.ERROR, "Unknown error in saving downloaded players locally...\n " +
                             "Using previous locally saved players.")
                 }
                 throw e
@@ -42,7 +40,8 @@ class ScrapeRankListController : Controller() {
         } else {
             println("No players scraped...")
             Platform.runLater {
-                alert(Alert.AlertType.INFORMATION, "")
+                alert(Alert.AlertType.INFORMATION, "Could not download players from badmintonplayer.dk" +
+                        "Using locally saved players from previous download.")
             }
         }
 
