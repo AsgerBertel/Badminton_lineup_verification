@@ -78,7 +78,6 @@ class RankListScraper {
         progress = 1.0
         println("Scraping finished. Found ${players.size} players.")
 
-        JsonFileHandler.saveJsonPlayerFile(players)
         return players
     }
 
