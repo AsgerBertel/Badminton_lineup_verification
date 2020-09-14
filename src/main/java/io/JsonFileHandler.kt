@@ -20,8 +20,8 @@ class JsonFileHandler {
             get() = run {
                 val os = System.getProperty("os.name").toLowerCase()
                 when {
-                    os.contains("win") -> "%APPDATA%\\TeamMatchVerify\\"
-                    os.contains("mac") || os.contains("darwin") -> "~/Library/Application Support/TeamMatchVerify"
+                    os.contains("win") -> System.getenv("APPDATA") + "\\TeamMatchVerify\\"
+                    os.contains("mac") || os.contains("darwin") -> System.getProperty("user.home") + "/Library/Application Support/TeamMatchVerify"
                     os.contains("nux") || os.contains("nix") || os.contains("aix") -> System.getProperty("user.home") + "/.TeamMatchVerify"
                     else -> ""
                 }
