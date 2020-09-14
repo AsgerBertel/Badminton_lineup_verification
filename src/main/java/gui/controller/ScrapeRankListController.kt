@@ -6,6 +6,7 @@ import gui.view.StandardLineupView
 import io.JsonFileHandler
 import javafx.application.Platform
 import javafx.scene.control.Alert
+import javafx.stage.Modality
 import javafx.util.Duration
 import model.Player
 import tornadofx.*
@@ -29,10 +30,6 @@ class ScrapeRankListController : Controller() {
             try {
                 println("Saving players in appdata...")
                 JsonFileHandler.saveJsonPlayerFile(players)
-                runLater(Duration.millis(60.0)) {
-                    alert(Alert.AlertType.INFORMATION, "Players updated successfully.\n" +
-                            "${players.size} players scraped.")
-                }
                 println("Player saved successfully!")
             } catch (e: Exception) {
                 println("Unable to save players from local JSON")
