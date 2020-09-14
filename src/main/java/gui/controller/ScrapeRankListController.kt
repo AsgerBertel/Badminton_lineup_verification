@@ -20,7 +20,7 @@ class ScrapeRankListController: Controller() {
         try {
             scrapedPlayers =  scraper.scrapeRankList()
         }
-        catch (e:Exception) { println("Exception in scraper") }
+        catch (e:Exception) { println("Exception in scraper\n $e\n${e.stackTrace.joinToString { it.toString() + "\n"}}") }
 
         if(scrapedPlayers.isEmpty()) {
             println("Loading players from local json...")
@@ -36,10 +36,9 @@ class ScrapeRankListController: Controller() {
         }
         else {
             println("Players has been loaded from scraper")
-            players = scrapedPlayers
         }
         Platform.runLater {
-            view.replaceWith(StandardLineupView(players)::class)
+            view.replaceWith(StandardLineupView::class)
         }
     }
 }
