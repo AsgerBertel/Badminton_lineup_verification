@@ -4,6 +4,7 @@ import javafx.beans.property.SimpleObjectProperty
 import javafx.collections.ObservableList
 import javafx.collections.transformation.FilteredList
 import javafx.collections.transformation.SortedList
+import javafx.scene.Group
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableRow
 import javafx.scene.control.TableView
@@ -11,6 +12,7 @@ import javafx.util.Duration
 import model.Category
 import model.Player
 import tornadofx.*
+import java.text.Collator
 
 
 class ChoosePlayerFragment(players: ObservableList<Player>, val cat: Category? = null, predicate: (Player) -> Boolean) : Fragment() {
@@ -35,10 +37,6 @@ class ChoosePlayerFragment(players: ObservableList<Player>, val cat: Category? =
 
         nameColumn!!.remainingWidth()
 
-        levelColumn!!.sortType = TableColumn.SortType.DESCENDING
-        singlesColumn!!.sortType = TableColumn.SortType.DESCENDING
-        doublesColumn!!.sortType = TableColumn.SortType.DESCENDING
-        mixedColumn!!.sortType = TableColumn.SortType.DESCENDING
         when(cat) {
             Category.LEVEL -> table!!.sortOrder.add(levelColumn)
             Category.SINGLES -> table!!.sortOrder.addAll(singlesColumn, levelColumn)
@@ -91,12 +89,12 @@ class ChoosePlayerFragment(players: ObservableList<Player>, val cat: Category? =
             root.setPrefSize(650.0, 500.0)
             columnResizePolicy = SmartResize.POLICY
 
-            nameColumn = readonlyColumn("Name", Player::name)
-            idColumn = readonlyColumn("ID", Player::badmintonId)
-            levelColumn = readonlyColumn("Level Points", Player::levelPoints)
-            singlesColumn = readonlyColumn("Single Points", Player::singlesPoints)
-            doublesColumn = readonlyColumn("Double Points", Player::doublesPoints)
-            mixedColumn = readonlyColumn("Mixed Points", Player::mixedPoints)
+            nameColumn = readonlyColumn("Name", Player::name) {sortNode = Group()}
+            idColumn = readonlyColumn("ID", Player::badmintonId) {sortNode = Group()}
+            levelColumn = readonlyColumn("Level Points", Player::levelPoints){sortNode = Group(); comparator = comparator.reversed()}
+            singlesColumn = readonlyColumn("Single Points", Player::singlesPoints){sortNode = Group(); comparator = comparator.reversed()}
+            doublesColumn = readonlyColumn("Double Points", Player::doublesPoints){sortNode = Group(); comparator = comparator.reversed()}
+            mixedColumn = readonlyColumn("Mixed Points", Player::mixedPoints){sortNode = Group(); comparator = comparator.reversed()}
 
             bindSelected(selectedPlayerProperty)
 
