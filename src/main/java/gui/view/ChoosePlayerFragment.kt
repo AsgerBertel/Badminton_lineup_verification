@@ -88,12 +88,12 @@ class ChoosePlayerFragment(players: ObservableList<Player>, val cat: Category? =
             root.setPrefSize(650.0, 500.0)
             columnResizePolicy = SmartResize.POLICY
 
-            nameColumn = readonlyColumn("Name", Player::name) { sortNode = Group(); isReorderable = false }
-            idColumn = readonlyColumn("ID", Player::badmintonId) { sortNode = Group(); isReorderable = false }
-            levelColumn = readonlyColumn("Level Points", Player::levelPoints) { sortNode = Group(); comparator = comparator.reversed(); isReorderable = false }
-            singlesColumn = readonlyColumn("Single Points", Player::singlesPoints) { sortNode = Group(); comparator = comparator.reversed(); isReorderable = false }
-            doublesColumn = readonlyColumn("Double Points", Player::doublesPoints) { sortNode = Group(); comparator = comparator.reversed(); isReorderable = false }
-            mixedColumn = readonlyColumn("Mixed Points", Player::mixedPoints) { sortNode = Group(); comparator = comparator.reversed(); isReorderable = false }
+            nameColumn = readonlyColumn("Name", Player::name) { sortNode = Group();}
+            idColumn = readonlyColumn("ID", Player::badmintonId) { sortNode = Group();}
+            levelColumn = readonlyColumn("Level Points", Player::levelPoints) { sortNode = Group(); comparator = comparator.reversed();}
+            singlesColumn = readonlyColumn("Single Points", Player::singlesPoints) { sortNode = Group(); comparator = comparator.reversed();}
+            doublesColumn = readonlyColumn("Double Points", Player::doublesPoints) { sortNode = Group(); comparator = comparator.reversed();}
+            mixedColumn = readonlyColumn("Mixed Points", Player::mixedPoints) { sortNode = Group(); comparator = comparator.reversed();}
 
             bindSelected(selectedPlayerProperty)
 
