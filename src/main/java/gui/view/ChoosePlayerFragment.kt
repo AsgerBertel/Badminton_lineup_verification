@@ -4,6 +4,7 @@ import javafx.beans.property.SimpleObjectProperty
 import javafx.collections.ObservableList
 import javafx.collections.transformation.FilteredList
 import javafx.collections.transformation.SortedList
+import javafx.scene.Group
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableRow
 import javafx.scene.control.TableView
@@ -91,12 +92,12 @@ class ChoosePlayerFragment(players: ObservableList<Player>, val cat: Category? =
             root.setPrefSize(650.0, 500.0)
             columnResizePolicy = SmartResize.POLICY
 
-            nameColumn = readonlyColumn("Name", Player::name)
-            idColumn = readonlyColumn("ID", Player::badmintonId)
-            levelColumn = readonlyColumn("Level Points", Player::levelPoints)
-            singlesColumn = readonlyColumn("Single Points", Player::singlesPoints)
-            doublesColumn = readonlyColumn("Double Points", Player::doublesPoints)
-            mixedColumn = readonlyColumn("Mixed Points", Player::mixedPoints)
+            nameColumn = readonlyColumn("Name", Player::name) { sortNode = Group() }
+            idColumn = readonlyColumn("ID", Player::badmintonId) { sortNode = Group() }
+            levelColumn = readonlyColumn("Level Points", Player::levelPoints) { sortNode = Group(); comparator = comparator.reversed() }
+            singlesColumn = readonlyColumn("Single Points", Player::singlesPoints) { sortNode = Group(); comparator = comparator.reversed() }
+            doublesColumn = readonlyColumn("Double Points", Player::doublesPoints) { sortNode = Group(); comparator = comparator.reversed() }
+            mixedColumn = readonlyColumn("Mixed Points", Player::mixedPoints) { sortNode = Group(); comparator = comparator.reversed() }
 
             bindSelected(selectedPlayerProperty)
 
