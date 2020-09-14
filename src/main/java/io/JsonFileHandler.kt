@@ -15,14 +15,14 @@ class JsonFileHandler {
         fun saveJsonPlayerFile(players: List<Player>) {
             val gson = GsonBuilder().create()
 
-            if (!File(OSHandler.appdataPath).exists())
-                File(OSHandler.appdataPath).mkdir()
+            if (!File(OS.appdataPath).exists())
+                File(OS.appdataPath).mkdir()
 
-            File("${OSHandler.appdataPath}//playerslist.json").writeText(gson.toJson(players))
+            File("${OS.appdataPath}//playerslist.json").writeText(gson.toJson(players))
         }
 
         fun loadPlayerFile(): List<Player> {
-            val playerString = File(OSHandler.appdataPath + "/playerslist.json").readText()
+            val playerString = File(OS.appdataPath + "/playerslist.json").readText()
             val collectionType: Type? = object : TypeToken<List<Player?>?>() {}.type
 
             // If local string is empty, return empty list
