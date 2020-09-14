@@ -1,3 +1,3 @@
 package exception
 
-class WrongSexException(message:String) : Exception(message)
+class WrongSexException(message: String) : Exception(message)

@@ -1,10 +1,8 @@
 package gui.view
 
-import gui.controller.MainController
-import model.Player
 import tornadofx.*
 
-class MainView : View()  {
+class MainView : View() {
     override val root = vbox()
 
     init {

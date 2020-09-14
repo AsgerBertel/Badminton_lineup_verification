@@ -1,19 +1,17 @@
 package model
 
-import exception.WrongSexException
 import javafx.beans.property.SimpleIntegerProperty
-import javafx.beans.property.SimpleObjectProperty
 import tornadofx.*
 
-abstract class Position(val specifier:String) {
-    abstract val sexReq:Sex?
+abstract class Position(val specifier: String) {
+    abstract val sexReq: Sex?
     val pointsProperty = SimpleIntegerProperty()
     val points by pointsProperty
 
-    abstract fun calcPoints():Int
+    abstract fun calcPoints(): Int
 }
 
-class SinglesPosition(specifier:String, override val sexReq: Sex?) : Position(specifier) {
+class SinglesPosition(specifier: String, override val sexReq: Sex?) : Position(specifier) {
     var spot = PositionSpot(sexReq)
 
     init {
@@ -25,7 +23,7 @@ class SinglesPosition(specifier:String, override val sexReq: Sex?) : Position(sp
     override fun calcPoints(): Int = spot.player.singlesPoints
 }
 
-class DoublesPosition(specifier:String, override val sexReq: Sex?) : Position(specifier) {
+class DoublesPosition(specifier: String, override val sexReq: Sex?) : Position(specifier) {
     var spot1 = PositionSpot(sexReq)
     var spot2 = PositionSpot(sexReq)
 
@@ -41,7 +39,7 @@ class DoublesPosition(specifier:String, override val sexReq: Sex?) : Position(sp
     override fun calcPoints(): Int = spot1.player.doublesPoints + spot2.player.doublesPoints
 }
 
-open class MixedPosition(specifier:String) : Position(specifier) {
+open class MixedPosition(specifier: String) : Position(specifier) {
     override val sexReq: Sex? = null
 
     var spot1 = PositionSpot(Sex.MALE)

@@ -5,7 +5,7 @@ import model.lineupError.*
 
 class LineupVerification {
     companion object {
-        fun verifyLineup(lineup: LineupStructure)  {
+        fun verifyLineup(lineup: LineupStructure) {
             val spots = lineup.serialize()
             clearErrors(spots)
 
@@ -25,28 +25,28 @@ class LineupVerification {
                 val spots = lc.serialize().distinct()
 
                 for (spot in spots)
-                    if (spots.count {it.player == spot.player} > 1)
+                    if (spots.count { it.player == spot.player } > 1)
                         spot.errors.add(TooManyOccurencesInSameCategoryError(spot.player))
             }
         }
 
         private fun setEmptySpots(spots: List<PositionSpot>) {
             for (spot in spots)
-                if(spot.player == Player()) {
+                if (spot.player == Player()) {
                     spot.errors.clear()
                     spot.errors.add(LineupEmpty())
                 }
         }
 
-        private fun clearErrors(l:List<PositionSpot>) {
+        private fun clearErrors(l: List<PositionSpot>) {
             l.forEach { it.errors.clear() }
         }
 
-        private fun setIllegality(l:List<PositionSpot>) {
+        private fun setIllegality(l: List<PositionSpot>) {
             l.forEach {
                 if (it.errors.any { s -> s is LineupError })
                     it.verdict = Verdict.ILLEGAL
-                else if (it.errors.any {s -> s is LineupEmpty })
+                else if (it.errors.any { s -> s is LineupEmpty })
                     it.verdict = Verdict.EMPTY
                 else if (it.errors.any { s -> s is LineupWarning })
                     it.verdict = Verdict.WARNING
@@ -92,11 +92,15 @@ class LineupVerification {
             }
         }
 
-        private fun errorToPosition(pos:Position, error:LineupError) {
-            when(pos) {
+        private fun errorToPosition(pos: Position, error: LineupError) {
+            when (pos) {
                 is SinglesPosition -> pos.spot.errors.add(error)
-                is DoublesPosition -> { pos.spot1.errors.add(error); pos.spot2.errors.add(error) }
-                is MixedPosition -> { pos.spot1.errors.add(error); pos.spot2.errors.add(error) }
+                is DoublesPosition -> {
+                    pos.spot1.errors.add(error); pos.spot2.errors.add(error)
+                }
+                is MixedPosition -> {
+                    pos.spot1.errors.add(error); pos.spot2.errors.add(error)
+                }
             }
         }
     }

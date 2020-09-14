@@ -10,23 +10,22 @@ import model.Player
 import tornadofx.*
 
 
-class ScrapeRankListController: Controller() {
+class ScrapeRankListController : Controller() {
     val scraper = RankListScraper()
     val view: ScrapeRankListView by inject()
 
     fun scrape() {
-        var players:List<Player> = listOf()
+        var players: List<Player> = listOf()
 
         try { // Scrape players from rank list
-            players =  scraper.scrapeRankList()
-        }
-        catch (e:Exception) {
+            players = scraper.scrapeRankList()
+        } catch (e: Exception) {
             println("Exception in scraper)")
             println("$e\n")
             println(e.stackTrace.joinToString(separator = "\n"))
         }
 
-        if(players.isNotEmpty()) {
+        if (players.isNotEmpty()) {
             try {
                 println("Saving players in appdata...")
                 JsonFileHandler.saveJsonPlayerFile(players)
@@ -34,8 +33,7 @@ class ScrapeRankListController: Controller() {
                     alert(Alert.AlertType.INFORMATION, "Players updated successfully.\n" +
                             "${players.size} players scraped.")
                 }
-            }
-            catch (e:Exception) {
+            } catch (e: Exception) {
                 println("Unable to save players from local JSON")
                 Platform.runLater {
                     alert(Alert.AlertType.ERROR, "Unknown error in saving scraped players locally...\n " +
@@ -43,8 +41,7 @@ class ScrapeRankListController: Controller() {
                 }
                 throw e
             }
-        }
-        else {
+        } else {
             println("No players scraped...")
             Platform.runLater {
                 alert(Alert.AlertType.INFORMATION, "")

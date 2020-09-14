@@ -14,7 +14,7 @@ object OSHandler {
             else -> OS.OTHER
         }
 
-        appdataPath = when(current) {
+        appdataPath = when (current) {
             OS.WIN -> System.getenv("APPDATA") + "\\TeamMatchVerify\\"
             OS.MAC -> System.getProperty("user.home") + "/Library/Application Support/TeamMatchVerify"
             OS.LINUX -> System.getProperty("user.home") + "/.TeamMatchVerify"

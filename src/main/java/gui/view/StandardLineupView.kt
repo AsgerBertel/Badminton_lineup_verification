@@ -1,9 +1,8 @@
 package gui.view
 
 import com.sun.javafx.binding.BidirectionalBinding.bind
-import gui.MyApp
-import gui.PlayerStringConverter
 import gui.PlayerPointsConverter
+import gui.PlayerStringConverter
 import gui.controller.StandardLineupController
 import gui.style.LineupStyle
 import io.JsonFileHandler
@@ -19,7 +18,7 @@ import tornadofx.*
 class StandardLineupView(val players: List<Player> = JsonFileHandler.loadPlayerFile(), val lineup: StandardLineupStructure = StandardLineupStructure()) : View() {
     override val root = vbox()
 
-    val controller:StandardLineupController by inject()
+    val controller: StandardLineupController by inject()
     val obPlayers = playersToObservable()
     val hboxList = mutableListOf<Pair<HBox, Category>>()
     val pointsList = mutableListOf<Pair<Label, Position>>()
@@ -120,7 +119,7 @@ class StandardLineupView(val players: List<Player> = JsonFileHandler.loadPlayerF
                                                     onMouseClicked = EventHandler { changePlayer(pos.spot2, Category.MIXED) }
                                                     tooltip {
                                                         bind(textProperty(), pos.spot2.playerProperty, PlayerPointsConverter(Category.MIXED))
-                                                    }                                               
+                                                    }
                                                 }
 
                                                 right = hbox(5) {
@@ -224,10 +223,10 @@ class StandardLineupView(val players: List<Player> = JsonFileHandler.loadPlayerF
         controller.verify()
     }
 
-    private fun changePlayer(spot:PositionSpot, sortAfter:Category? = null) {
-        val choosePlayerFragment = ChoosePlayerFragment(obPlayers, sortAfter) { spot.sexReq == null || it.sex.knownEqual(spot.sexReq)  }.apply { openModal(block = true) }
+    private fun changePlayer(spot: PositionSpot, sortAfter: Category? = null) {
+        val choosePlayerFragment = ChoosePlayerFragment(obPlayers, sortAfter) { spot.sexReq == null || it.sex.knownEqual(spot.sexReq) }.apply { openModal(block = true) }
 
-        if(choosePlayerFragment.getResult() != null) {
+        if (choosePlayerFragment.getResult() != null) {
             spot.player = choosePlayerFragment.getResult()
                     ?: spot.player
 
@@ -235,7 +234,7 @@ class StandardLineupView(val players: List<Player> = JsonFileHandler.loadPlayerF
         }
     }
 
-    private fun bindPlayerToColorProperty(h: HBox, cat:Category) {
+    private fun bindPlayerToColorProperty(h: HBox, cat: Category) {
         hboxList.add(Pair(h, cat))
     }
 
