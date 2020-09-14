@@ -19,7 +19,10 @@ class ScrapeRankListView : View() {
     override fun onDock() {
         super.onDock()
 
-        title = "Scraping BadmintonPlayer"
+        title = "Downloading players"
+
+        primaryStage.width = 400.0
+        primaryStage.height = 120.0
     }
 
     init {

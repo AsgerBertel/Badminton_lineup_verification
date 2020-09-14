@@ -33,8 +33,6 @@ class StandardLineupView(val players: List<Player> = JsonFileHandler.loadPlayerF
         primaryStage.minHeight = primaryStage.height
         primaryStage.minWidth = primaryStage.width
 
-        primaryStage.icons += Image("logo.png")
-
         controller.verify()
     }
 

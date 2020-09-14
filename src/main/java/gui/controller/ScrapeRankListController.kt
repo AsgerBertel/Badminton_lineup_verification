@@ -9,7 +9,6 @@ import javafx.scene.control.Alert
 import model.Player
 import tornadofx.*
 
-
 class ScrapeRankListController : Controller() {
     val scraper = RankListScraper()
     val view: ScrapeRankListView by inject()
@@ -33,6 +32,7 @@ class ScrapeRankListController : Controller() {
                     alert(Alert.AlertType.INFORMATION, "Players updated successfully.\n" +
                             "${players.size} players scraped.")
                 }
+                println("Player saved successfully!")
             } catch (e: Exception) {
                 println("Unable to save players from local JSON")
                 Platform.runLater {
