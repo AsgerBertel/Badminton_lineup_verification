@@ -36,10 +36,6 @@ class ChoosePlayerFragment(players: ObservableList<Player>, val cat: Category? =
 
         nameColumn!!.remainingWidth()
 
-        levelColumn!!.sortType = TableColumn.SortType.DESCENDING
-        singlesColumn!!.sortType = TableColumn.SortType.DESCENDING
-        doublesColumn!!.sortType = TableColumn.SortType.DESCENDING
-        mixedColumn!!.sortType = TableColumn.SortType.DESCENDING
         when (cat) {
             Category.LEVEL -> table!!.sortOrder.add(levelColumn)
             Category.SINGLES -> table!!.sortOrder.addAll(singlesColumn, levelColumn)
