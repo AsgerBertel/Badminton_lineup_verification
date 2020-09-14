@@ -5,6 +5,7 @@ import gui.view.ScrapeRankListView
 import gui.view.StandardLineupView
 import io.JsonFileHandler
 import javafx.application.Platform
+import javafx.scene.control.Alert
 import model.Player
 import tornadofx.*
 
@@ -14,29 +15,42 @@ class ScrapeRankListController: Controller() {
     val view: ScrapeRankListView by inject()
 
     fun scrape() {
-        var scrapedPlayers:List<Player> = listOf()
-        val players: List<Player>
+        var players:List<Player> = listOf()
 
-        try {
-            scrapedPlayers =  scraper.scrapeRankList()
+        try { // Scrape players from rank list
+            players =  scraper.scrapeRankList()
         }
-        catch (e:Exception) { println("Exception in scraper\n $e\n${e.stackTrace.joinToString { it.toString() + "\n"}}") }
+        catch (e:Exception) {
+            println("Exception in scraper)")
+            println("$e\n")
+            println(e.stackTrace.joinToString(separator = "\n"))
+        }
 
-        if(scrapedPlayers.isEmpty()) {
-            println("Loading players from local json...")
+        if(players.isNotEmpty()) {
             try {
-                players = JsonFileHandler.loadPlayerFile()
-                println("Players loaded from local JSON")
+                println("Saving players in appdata...")
+                JsonFileHandler.saveJsonPlayerFile(players)
+                Platform.runLater {
+                    alert(Alert.AlertType.INFORMATION, "Players updated successfully.\n" +
+                            "${players.size} players scraped.")
+                }
             }
             catch (e:Exception) {
-                println("Unable to load players from local JSON")
+                println("Unable to save players from local JSON")
+                Platform.runLater {
+                    alert(Alert.AlertType.ERROR, "Unknown error in saving scraped players locally...\n " +
+                            "Using previous locally saved players.")
+                }
                 throw e
             }
-
         }
         else {
-            println("Players has been loaded from scraper")
+            println("No players scraped...")
+            Platform.runLater {
+                alert(Alert.AlertType.INFORMATION, "")
+            }
         }
+
         Platform.runLater {
             view.replaceWith(StandardLineupView::class)
         }

@@ -16,28 +16,17 @@ class JsonFileHandler {
     companion object {
         private val gson = Gson()
 
-        private val appdataPath
-            get() = run {
-                val os = System.getProperty("os.name").toLowerCase()
-                when {
-                    os.contains("win") -> System.getenv("APPDATA") + "\\TeamMatchVerify\\"
-                    os.contains("mac") || os.contains("darwin") -> System.getProperty("user.home") + "/Library/Application Support/TeamMatchVerify"
-                    os.contains("nux") || os.contains("nix") || os.contains("aix") -> System.getProperty("user.home") + "/.TeamMatchVerify"
-                    else -> ""
-                }
-            }
-
         fun saveJsonPlayerFile(players: List<Player>) {
             val gson = GsonBuilder().create()
 
-            if (!File(appdataPath).exists())
-                File(appdataPath).mkdir()
+            if (!File(OSHandler.appdataPath).exists())
+                File(OSHandler.appdataPath).mkdir()
 
-            File("$appdataPath//playerslist.json").writeText(gson.toJson(players))
+            File("${OSHandler.appdataPath}//playerslist.json").writeText(gson.toJson(players))
         }
 
         fun loadPlayerFile(): List<Player> {
-            val playerString = File(appdataPath + "/playerslist.json").readText()
+            val playerString = File(OSHandler.appdataPath + "/playerslist.json").readText()
             val collectionType: Type? = object : TypeToken<List<Player?>?>() {}.type
 
             // If local string is empty, return empty list
